@@ -9,6 +9,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -49,16 +50,79 @@ model VerificationToken {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   name          String?
-  email         String?   @unique
-  emailVerified DateTime?
+  email         String?      @unique @ignore
+  emailVerified DateTime?    @ignore
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Image         Image[]
+  Nomination    Nomination[]
+  Nominee       Nominee[]
 
   @@map("user")
 }
 
+enum ImageSize {
+  PREVIEW
+  SMALL
+  LARGE
+  ORIGINAL
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  size          ImageSize
+  type          String    @db.VarChar(64)
+  mime          String    @db.VarChar(64)
+  imageData     String
+  addedBy       User      @relation(fields: [addedByUserId], references: [id])
+  addedByUserId String
+  Nominee       Nominee[]
+
+  @@map("media")
+}
+
+model Nomination {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name         String
+  description  String?
+  extras       Json      @default("{}")
+  author       User      @relation(fields: [authorUserId], references: [id])
+  authorUserId String
+  Nominee      Nominee[]
+  priority     Int       @default(0)
+  popularity   Int       @default(0)
+  tags         Json      @default("[]")
+
+  @@map("nomination")
+}
+
+model Nominee {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name       String
+  comment    String?
+  position   Int        @default(-1)
+  extras     Json       @default("{}")
+  nomination Nomination @relation(fields: [nominationId], references: [id])
+  author     User       @relation(fields: [authorUserId], references: [id])
+  image      Image      @relation(fields: [imageId], references: [id])
+
+  nominationId String
+  authorUserId String
+  imageId      String
+
+  @@map("nominee")
+}
