@@ -49,6 +49,12 @@ model VerificationToken {
   @@map("verificationToken")
 }
 
+enum UserRole {
+  USER
+  MOD
+  ADMIN
+}
+
 model User {
   id            String       @id @default(uuid())
   createdAt     DateTime     @default(now())
@@ -57,6 +63,7 @@ model User {
   email         String?      @unique @ignore
   emailVerified DateTime?    @ignore
   image         String?
+  role          UserRole     @default(USER)
   accounts      Account[]
   sessions      Session[]
   Image         Image[]
