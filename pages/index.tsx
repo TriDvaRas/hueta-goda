@@ -11,7 +11,8 @@ export default function Home() {
   if (session) {
     return (
       <>
-        Signed in as {session.user?.email} <br />
+        Signed in as {session.user?.name} <br />
+        {JSON.stringify(session)}
         <button onClick={() => signOut()}>Sign out</button>
       </>
     )

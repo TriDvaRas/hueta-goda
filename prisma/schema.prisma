@@ -56,19 +56,21 @@ enum UserRole {
 }
 
 model User {
-  id            String       @id @default(uuid())
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  name          String?
-  email         String?      @unique @ignore
-  emailVerified DateTime?    @ignore
+  id            String    @id @default(uuid())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  displayName   String?
+  email         String?   @unique @ignore
+  emailVerified DateTime? @ignore
   image         String?
-  role          UserRole     @default(USER)
-  accounts      Account[]
-  sessions      Session[]
-  Image         Image[]
-  Nomination    Nomination[]
-  Nominee       Nominee[]
+  role          UserRole  @default(USER)
+
+  accounts   Account[]
+  sessions   Session[]
+  Image      Image[]
+  Nomination Nomination[]
+  Nominee    Nominee[]
 
   @@map("user")
 }
@@ -76,24 +78,24 @@ model User {
 enum ImageSize {
   PREVIEW
   SMALL
+  MEDIUM
   LARGE
   ORIGINAL
 }
 
 model Image {
-  id        String   @id @default(uuid())
+  id        String   @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   size          ImageSize
-  type          String    @db.VarChar(64)
   mime          String    @db.VarChar(64)
   imageData     String
   addedBy       User      @relation(fields: [addedByUserId], references: [id])
   addedByUserId String
-  Nominee       Nominee[]
 
-  @@map("media")
+  @@id([id, size])
+  @@map("image")
 }
 
 model Nomination {
@@ -125,7 +127,6 @@ model Nominee {
   extras     Json       @default("{}")
   nomination Nomination @relation(fields: [nominationId], references: [id])
   author     User       @relation(fields: [authorUserId], references: [id])
-  image      Image      @relation(fields: [imageId], references: [id])
 
   nominationId String
   authorUserId String
