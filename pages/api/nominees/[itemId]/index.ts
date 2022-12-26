@@ -1,12 +1,11 @@
 
 import { Nomination } from '@prisma/client';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import prisma from '../../../../lib/prismadb';
-import adminOnly from '../../../../middleware/adminOnly';
 import commonErrorHandlers from '../../../../middleware/commonErrorHandlers';
 import requireApiSession from '../../../../middleware/requireApiSession';
-import { HGApiItemPutBody, HGApiItemResponse, HGApiPaginationResponse } from '../../../../types/hg-api';
+import { HGApiItemPutBody, HGApiItemResponse } from '../../../../types/hg-api';
 
 
 

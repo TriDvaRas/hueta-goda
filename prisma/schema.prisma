@@ -98,6 +98,14 @@ model Image {
   @@map("image")
 }
 
+enum AspectRatio {
+  ULTRAWIDE
+  WIDE
+  SQUARE
+  TALL
+  ULTRATALL
+}
+
 model Nomination {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -105,13 +113,14 @@ model Nomination {
 
   name         String
   description  String?
-  extras       Json      @default("{}")
-  author       User      @relation(fields: [authorUserId], references: [id])
+  extras       Json        @default("{}")
+  aspectRatio  AspectRatio @default(TALL)
+  author       User        @relation(fields: [authorUserId], references: [id])
   authorUserId String
   Nominee      Nominee[]
-  priority     Int       @default(0)
-  popularity   Int       @default(0)
-  tags         Json      @default("[]")
+  priority     Int         @default(0)
+  popularity   Int         @default(0)
+  tags         Json        @default("[]")
 
   @@map("nomination")
 }

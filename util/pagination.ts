@@ -1,8 +1,9 @@
 import { PaginationQuery } from "../types/hg-api";
+import { globalConfig } from './globalConfig';
 
 export function getPrismaPaginationArgs<T>(query: PaginationQuery<T>, defaultOrderBy: keyof T) {
-    const pageSize = query.pageSize || 10;
-    const page = query.page || 1;
+    const pageSize = +(query.pageSize || globalConfig.defaultNominationsPageSize);
+    const page = +(query.page || 1);
     const skip = (page - 1) * pageSize;
     const orderBy: { [key in keyof T]?: 'desc' | 'asc' } = {}
     orderBy[query.orderBy || defaultOrderBy] = query.order || 'desc'

@@ -1,0 +1,215 @@
+@use "sass:color" 
+//$theme-colors: (  "dark": purple);
+
+@import "./_vars"
+@import "bootstrap"
+@import url('../node_modules/bootstrap-icons/font/bootstrap-icons.css')
+
+*
+    // overflow-x: hidden
+
+#__next,body,#app
+    background-color: $gray-900
+    min-height: 100vh
+// @media (min-width: 768.02px)
+body
+    height: 100vh
+    overflow: overlay //TODO hidden
+    overflow-x: hidden
+
+#navbar
+    position: sticky
+    top: 0
+    z-index: 100
+
+    // #root > div
+    //     min-height: 100vh
+    //     margin-bottom: 0
+
+.allow-text-overflow
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.imagecrop
+    object-fit: cover
+
+.player-card
+    width: 400px
+    height: 600px
+
+.egg-text
+    font-size: 8px
+
+.fix-font-weight h3,h5
+    font-weight: 350
+
+.fs-1, .fs-1 *
+    font-size: 1em
+
+.fs-2, .fs-2 *
+    font-size: 1.4em
+
+.fs-3, .fs-3 *
+    font-size: 2em
+.fs-4, .fs-4 *
+    font-size: 3em
+.td-min-width
+    width: 1%
+    white-space: nowrap
+
+.wheel-item-button
+    font-size: 1.6em
+    cursor: pointer
+
+.wheel-item-button:hover
+    color: $gray-300
+    transition: color 0.15s ease-in-out
+
+.wheel-item-add
+    font-size: 2.4em
+    cursor: pointer
+.wheel-item-add:hover
+    color: $gray-300
+    transition: color 0.15s ease-in-out
+
+.wheel-item-delete
+    color: $danger
+
+.wheel-item-delete:hover
+    color: $danger-hover
+    transition: color 0.15s ease-in-out
+
+.opacity-0
+    opacity: 0 !important
+
+.modal-margin
+    margin-right: 13%
+
+.bg-secret
+    background-color: #9daf00
+    color: white
+
+.bg-secondary-active
+    background-color: $secondary-active
+    color: $light
+
+.bg-dark-900
+    background-color: $gray-900
+    color: $light
+.bg-dark-850
+    background-color: $gray-850
+    color: $light
+.bg-code
+    background-color: #2d243a
+    color: $light
+.bg-dark-750
+    background-color: $gray-750
+    color: $light
+
+.bg-dark-700
+    background-color: $gray-700
+    color: $light
+
+.bg-dark-600
+    background-color: $gray-600
+    color: $light
+.bg-dark-200
+    background-color: $gray-200
+
+select.bg-dark-900:hover, input.bg-dark-900:hover
+    background-color: $gray-800
+    color: $light
+
+select.bg-dark-700:hover, input.bg-dark-700:hover
+    background-color: $gray-600
+    color: $light
+
+// select.bg-dark-600:hover, input.bg-dark-600:hover,
+//     background-color: $gray-500
+//     color: $light
+
+select.bg-dark-900:focus, input.bg-dark-900:focus
+    background-color: $gray-800
+    color: $light
+
+select.bg-dark-700:focus, input.bg-dark-700:focus
+    background-color: $gray-600
+    color: $light
+
+select.bg-dark-600:focus,input.bg-dark-600:focus
+    background-color: $gray-500
+    color: $light
+
+.text-dark-900
+    color: $gray-900
+
+.text-dark-700
+    color: $gray-700
+
+.text-dark-600
+    color: $gray-600
+
+.text-dark-500
+    color: $gray-500
+
+.text-dark-200
+    color: $gray-200
+
+.ph-dark
+    color: $input-placeholder-color
+
+.border-dark-900
+    border-color: $gray-900 !important
+
+.border-dark-700
+    border-color: $gray-700 !important
+
+.border-dark-600
+    border-color: $gray-600 !important
+
+.code-removed
+    background: red !important
+    border-radius: 5px
+
+.code-added
+    background: green !important
+    border-radius: 5px
+.round-span
+    border-radius: 4px
+
+.cell-overflow-ellipsis
+    text-overflow: ellipsis
+    max-width: 250px
+    white-space: nowrap
+    overflow: hidden
+.opacity-die
+    opacity: 0.25
+    transition: opacity .1s ease-out
+.opacity-die:hover
+    opacity: 0.5
+.opacity-die-selected
+    transition: opacity .1s ease-out
+    opacity: 0.80
+.opacity-die-selected:hover
+    opacity: 1
+.animated-percent
+    transition: flex-basis .1s linear
+
+.hidden-scrollbar *::-webkit-scrollbar
+    background-color: #00000000
+
+.error-container > div
+    height: calc(100vh - 56px) !important
+
+.active-bg-override.active
+    background-color: $gray-600!important
+
+td
+    width: auto
+
+td.td-min
+    width: 1%
+    white-space: nowrap
+
+.popover-arrow
+    display: none !important

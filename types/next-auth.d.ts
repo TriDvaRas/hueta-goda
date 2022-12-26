@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import { IncomingMessage, ServerResponse } from "http";
 import { Session } from 'next-auth';
 import { NextApiResponse } from 'next';
+import { User } from "@prisma/client";
 declare module "next-auth" {
   interface Session {
     user: User

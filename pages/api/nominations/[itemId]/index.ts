@@ -1,12 +1,11 @@
 
 import { Nomination } from '@prisma/client';
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import prisma from '../../../../lib/prismadb';
-import adminOnly from '../../../../middleware/adminOnly';
 import commonErrorHandlers from '../../../../middleware/commonErrorHandlers';
 import requireApiSession from '../../../../middleware/requireApiSession';
-import { HGApiItemPutBody, HGApiItemResponse, HGApiPaginationResponse } from '../../../../types/hg-api';
+import { HGApiItemPutBody, HGApiItemResponse } from '../../../../types/hg-api';
 
 
 
@@ -19,7 +18,7 @@ export default router
         try {
             const nomination = await prisma.nomination.findUnique({
                 where: {
-                    id: req.params.itemId
+                    id: req.query.itemId as string
                 }
             })
             res.send(nomination);
@@ -34,7 +33,7 @@ export default router
             const body = req.body
             //TODO validation
             const nomination = await prisma.nomination.update({
-                where: { id: req.params.itemId },
+                where: { id: req.query.itemId as string },
                 data: body
             })
             res.send(nomination);

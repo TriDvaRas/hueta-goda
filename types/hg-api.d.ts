@@ -19,7 +19,7 @@ export type HGApiPaginationResponse<T> = {
     page: number,
     totalPages: number,
     totalItems: number,
-} | HGApiError
+} 
 export type HGApiItemResponse<T> = T | HGApiError | null
 export type HGApiItemPostBody<T> = Partial<T>
 export type HGApiItemPutBody<T> = Partial<T>

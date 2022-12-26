@@ -1,5 +1,5 @@
 
-import { Nomination } from '@prisma/client';
+import { Nominee } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect';
 import prisma from '../../../lib/prismadb';
@@ -18,11 +18,11 @@ const router = nc<NextApiRequest, NextApiResponse>({ ...commonErrorHandlers });
 export default router
     .use(requireApiSession)
     .use(adminOnly)
-    .get(async (req: NextApiRequest & { query: PaginationQuery<Nomination> }, res: NextApiResponse<HGApiPaginationResponse<Nomination[]>>) => {
+    .get(async (req: NextApiRequest & { query: PaginationQuery<Nominee> }, res: NextApiResponse<HGApiPaginationResponse<Nominee[]> | HGApiError>) => {
         try {
-            const { orderBy, skip, pageSize, page, prismaParams } = getPrismaPaginationArgs(req.query, 'priority');
-            const nominations = prisma.nomination.findMany(prismaParams)
-            const totalItems = prisma.nomination.count();
+            const { orderBy, skip, pageSize, page, prismaParams } = getPrismaPaginationArgs(req.query, 'position');
+            const nominations = prisma.nominee.findMany(prismaParams)
+            const totalItems = prisma.nominee.count();
 
             await Promise.all([nominations, totalItems])
                 .then(([items, totalItems]) => {
@@ -38,14 +38,14 @@ export default router
             res.status(500).json({ error: error.message, status: 500 })
         }
     })
-    .post(async (req: NextApiRequest & { body: HGApiItemPostBody<Nomination> }, res: NextApiResponse<HGApiItemResponse<Nomination>>) => {
+    .post(async (req: NextApiRequest & { body: HGApiItemPostBody<Nominee> }, res: NextApiResponse<HGApiItemResponse<Nominee>>) => {
         try {
             const body = req.body
             //TODO validation
-            const nomination = await prisma.nomination.create({
+            const nominee = await prisma.nominee.create({
                 data: body
             })
-            res.send(nomination);
+            res.send(nominee);
         } catch (error: any) {
             res.status(500).json({ error: error.message, status: 500 })
         }

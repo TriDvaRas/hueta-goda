@@ -4,6 +4,11 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../lib/prismadb"
 
 export const authOptions: NextAuthOptions = {
+    callbacks: {
+        session(params) {
+            return { ...params.session, user: { ...params.session.user, id: params.user.id } }
+        },
+    },
     adapter: PrismaAdapter(prisma),
     session: {
         maxAge: 1 * 24 * 60 * 60, // 1 days
