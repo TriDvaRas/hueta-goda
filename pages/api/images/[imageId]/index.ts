@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
-import prisma from '../../../lib/prismadb';
-import commonErrorHandlers from '../../../middleware/commonErrorHandlers';
+import prisma from '../../../../lib/prismadb';
+import commonErrorHandlers from '../../../../middleware/commonErrorHandlers';
 import { ImageSize } from '@prisma/client';
 
 
@@ -14,7 +14,7 @@ export default router
         const image = await prisma.image.findUnique({
             where: {
                 id_size: {
-                    id: req.params.imageId,
+                    id: req.query.imageId as any,
                     size: req.query.size || ImageSize.ORIGINAL
                 }
             }

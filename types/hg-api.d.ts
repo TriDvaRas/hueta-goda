@@ -1,4 +1,5 @@
 import { Session } from "next-auth";
+import { globalConfig } from '../util/globalConfig';
 
 export interface NextApiRequestWithSession extends NextApiRequest {
     session: Session
@@ -23,3 +24,9 @@ export type HGApiPaginationResponse<T> = {
 export type HGApiItemResponse<T> = T | HGApiError | null
 export type HGApiItemPostBody<T> = Partial<T>
 export type HGApiItemPutBody<T> = Partial<T>
+
+export interface NominationExtra {
+    type: typeof globalConfig.nominationExtraTypes
+    required?: boolean
+    question?: string
+}

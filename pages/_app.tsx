@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import '../styles/custom.sass'
 import '../styles/fonts.sass'
 import '../styles/aspectRatio.sass'
+import '../styles/image-upload.sass'
 import 'react-placeholder/lib/reactPlaceholder.css';
 import type { AppProps } from 'next/app'
 import { SessionProvider } from "next-auth/react"
@@ -22,9 +23,9 @@ export default function App({
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <SessionProvider session={session}>
-      {/* <Head>
+      <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head> */}
+      </Head>
       <div id="app" className={`mh-100 bg-dark-900 `}>
         {getLayout(<Component {...pageProps} />)}
       </div>

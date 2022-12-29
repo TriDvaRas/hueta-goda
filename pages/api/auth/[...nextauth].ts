@@ -6,7 +6,7 @@ import prisma from "../../../lib/prismadb"
 export const authOptions: NextAuthOptions = {
     callbacks: {
         session(params) {
-            return { ...params.session, user: { ...params.session.user, id: params.user.id } }
+            return { ...params.session, user: { ...params.session.user, id: params.user.id, role:(params.user as any).role } }
         },
     },
     adapter: PrismaAdapter(prisma),

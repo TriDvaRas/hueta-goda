@@ -1,16 +1,16 @@
 import type { NextPage } from 'next'
 import { useSession, signIn, signOut } from "next-auth/react"
 import { NextPageWithLayout } from './_app';
+import GetDefaultLayout from '../layouts/DefaultLayout';
 import Error from 'next/error';
 import Head from 'next/head';
-import GetDefaultLayout from '../layouts/DefaultLayout';
 
 const Error404: NextPageWithLayout = () => {
   return (
     <div className='error-container'>
-      <Error statusCode={404} title='Что ты тут забыл? Нет, правда, почему ты здесь? Уходи' />
+      <Error statusCode={401} title='Ты кто? Для доступа к этой странице нужно войти' />
       <Head>
-        <title>Где?</title>
+        <title>401</title>
       </Head>
     </div>
   )

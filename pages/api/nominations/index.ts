@@ -18,7 +18,6 @@ const router = nc<NextApiRequest, NextApiResponse>({ ...commonErrorHandlers });
 
 export default router
     .use(requireApiSession)
-    .use(adminOnly)
     .get(async (req: NextApiRequest & { query: PaginationQuery<Nomination> }, res: NextApiResponse<HGApiPaginationResponse<NominationFull[]> | HGApiError>) => {
         try {
             const { orderBy, skip, pageSize, page, prismaParams } = getPrismaPaginationArgs(req.query, 'priority');
@@ -33,6 +32,9 @@ export default router
                     Nominee: {
                         where: {
                             authorUserId: req.session.user.id
+                        },
+                        orderBy: {
+                            position: 'asc'
                         }
                     }
                 }
@@ -53,17 +55,24 @@ export default router
             res.status(500).json({ error: error.message, status: 500 })
         }
     })
+    .use(adminOnly)
     .post(async (req: NextApiRequest & { body: HGApiItemPostBody<Nomination> }, res: NextApiResponse<HGApiItemResponse<NominationFull>>) => {
         try {
             const body = req.body
             //TODO validation
             const nomination = await prisma.nomination.create({
-                data: body,
+                data: {
+                    ...body,
+                    authorUserId: req.session.user.id
+                },
                 include: {
                     author: true,
                     Nominee: {
                         where: {
                             authorUserId: req.session.user.id
+                        },
+                        orderBy: {
+                            position: 'asc'
                         }
                     }
                 }

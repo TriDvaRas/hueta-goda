@@ -8,14 +8,14 @@ import TheImage from '../image/TheImage';
 
 interface Props {
     nomination: NominationFull,
-    name?: 'nomination' | 'nominee'
+    name?: 'nomination' | 'nominee' | 'none'
     nomineePosition?: number
     onTextEdit?: (text: string) => void
 }
 export default function NominationFullPreview(props: Props) {
     const { nomination, name, nomineePosition, onTextEdit } = props
     let [squareRef, { width }] = useElementSize()
-    if (!width) width = 300
+    if (!width) width = 30
     const nominee = (nomineePosition ? (nomination.Nominee || []).find(x => x.position == nomineePosition) : (nomination.Nominee || [])[0])
 
     return (
@@ -51,27 +51,27 @@ export default function NominationFullPreview(props: Props) {
                         onSave={onTextEdit}
                     /> :
                     <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
-            ) : (
-                null
-                // onTextEdit ?
-                //     <EdiText
-                //         type="text"
-                //         value={nominee?.name || 'Sample Text'}
-                //         viewProps={{
-                //             className: 'impact text-center',
-                //             style: { fontSize: width / 8 }
-                //         }}
-                //         containerProps={{
-                //             className: 'd-flex justify-content-center'
-                //         }}
-                //         editButtonProps={{ style: { visibility: 'hidden', display: 'none' } }}
-                //         validation={(t) => t.length > 0}
-                //         validationMessage='Подлиньше нужно. Спасибо.'
-                //         editOnViewClick
-                //         onSave={onTextEdit}
-                //     /> :
-                //     <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nominee?.name || 'Sample Text').toUpperCase()}</h1>
-            )}
+            ) : name == 'nominee' ? (
+
+                onTextEdit ?
+                    <EdiText
+                        type="text"
+                        value={nominee?.name || 'Sample Text'}
+                        viewProps={{
+                            className: 'impact text-center',
+                            style: { fontSize: width / 8 }
+                        }}
+                        containerProps={{
+                            className: 'd-flex justify-content-center'
+                        }}
+                        editButtonProps={{ style: { visibility: 'hidden', display: 'none' } }}
+                        validation={(t) => t.length > 0}
+                        validationMessage='Подлиньше нужно. Спасибо.'
+                        editOnViewClick
+                        onSave={onTextEdit}
+                    /> :
+                    <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nominee?.name || 'Sample Text').toUpperCase()}</h1>
+            ) : null}
         </div>
 
     )

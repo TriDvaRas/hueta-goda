@@ -43,7 +43,7 @@ const Bar = ({ }: Props) => {
                         <Nav.Link eventKey='/nominations'>
                             Номинации
                         </Nav.Link>
-                        {session?.user.role == UserRole.ADMIN || <Form.Check className=' mt-2' type={'switch'} defaultChecked={showAdminTools} onChange={(e) => setShowAdminTools(!e.target.checked)} />}
+                        {session?.user.role === UserRole.ADMIN && <Form.Check className=' mt-2' type={'switch'} defaultChecked={showAdminTools} onChange={(e) => setShowAdminTools(e.target.checked)} />}
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">

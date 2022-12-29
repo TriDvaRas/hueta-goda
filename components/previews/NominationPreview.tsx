@@ -13,7 +13,7 @@ interface Props {
 export default function NominationPreview(props: Props) {
     const { nomination,  onTextEdit } = props
     let [squareRef, { width }] = useElementSize()
-    if (!width) width = 300
+    if (!width) width = 30
     return (
         <div className='w-100 mw-100 ' ref={squareRef}>
             <div className='py-2' style={{
@@ -43,7 +43,7 @@ export default function NominationPreview(props: Props) {
                         editOnViewClick
                         onSave={onTextEdit}
                     /> :
-                    <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
+                    <h1 className='Impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
             }
         </div>
 

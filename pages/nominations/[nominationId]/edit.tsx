@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Col, Row, Card, Form, Button, Badge, } from 'react-bootstrap';
+import { Col, Row, Card, Form, Button, Badge, Table, } from 'react-bootstrap';
 import GetDefaultLayout from '../../../layouts/DefaultLayout';
 import { NominationFull } from '../../../types/extendedApiTypes';
 import { NextPageWithLayout } from '../../_app';
@@ -9,7 +9,7 @@ import GetThinLayout from '../../../layouts/ThinLayout';
 import NominationPreview from '../../../components/previews/NominationPreview';
 import NominationPlaceholder from '../../../components/plaseholders/NominationPlaceholder';
 import { globalConfig } from '../../../util/globalConfig';
-import { AspectRatio, Nomination, Nominee } from '@prisma/client';
+import { AspectRatio, Nomination, Nominee, UserRole } from '@prisma/client';
 import arULTRAWIDE from '../../../assets/svg/ar-ULTRAWIDE.svg';
 import arSQUARE from '../../../assets/svg/ar-SQUARE.svg';
 import arTALL from '../../../assets/svg/ar-TALL.svg';
@@ -18,6 +18,10 @@ import arULTRATALL from '../../../assets/svg/ar-ULTRATALL.svg';
 import ReactPlaceholder from 'react-placeholder/lib/index';
 import RectShape from 'react-placeholder/lib/placeholders/RectShape';
 import Image from 'next/image';
+import { NominationExtra } from '../../../types/hg-api';
+import EdiText from 'react-editext';
+import { useSession } from 'next-auth/react';
+import { useLocalStorage } from 'usehooks-ts';
 const ratioImgs: { img: any, ratio: AspectRatio }[] = [
     { img: arTALL, ratio: 'TALL' },
     { img: arSQUARE, ratio: 'SQUARE' },
@@ -27,7 +31,9 @@ const ratioImgs: { img: any, ratio: AspectRatio }[] = [
 ]
 
 const NominationEdit: NextPageWithLayout = () => {
+    const { data: session, status: sessionStatus } = useSession()
     const router = useRouter()
+    const [showAdminTools, setShowAdminTools] = useLocalStorage('showAdminTools', false)
     const [nominationId, setNominationId] = useState<string>(router.query.nominationId as string)
     useEffect(() => {
         setNominationId(router.query.nominationId as string)
@@ -64,19 +70,24 @@ const NominationEdit: NextPageWithLayout = () => {
     function resetChanges() {
 
     }
+    if (sessionStatus == 'unauthenticated')
+        router.push('/401')
+    if (session && nomination && session.user.id !== nomination.authorUserId && !(session.user.role == UserRole.ADMIN && showAdminTools))
+        router.push('/403')
 
 
     return <div>
         <Row className=' my-3'>
-            <Col lg={8}>
+            <Col lg={1}></Col>
+            <Col lg={10}>
                 <Card bg='dark' text='light'>
                     <Card.Body>
                         Это редактор номинаций. Тут можно редактировать номинации. Нажатие на текст для редактирования, Дополнительные поля ясно.
                     </Card.Body>
                 </Card>
                 <Row className='mt-3'>
-                    <Col lg={8}>
-                        <div className='mx-5'>
+                    <Col lg={7}>
+                        <div className=''>
                             {localNomination ? <NominationPreview nomination={localNomination} onTextEdit={(text) => { setLocalNomination({ ...localNomination, name: text.trim() }) }} /> : <NominationPlaceholder />}
                         </div>
                     </Col>
@@ -86,7 +97,7 @@ const NominationEdit: NextPageWithLayout = () => {
                                 <Card bg='dark' text='light' className='mt-2'>
                                     <Card.Body>
                                         <Form.Group>
-                                            <Form.Label className='mx-2 mt-2'>Описание</Form.Label>
+                                            <Form.Label className='mx-2 '>Описание</Form.Label>
                                             <Form.Control type="input" defaultValue={localNomination.description || ''} onChange={e => setLocalNomination({ ...localNomination, description: e.target.value })} />
                                         </Form.Group>
                                         {/* ratio */}
@@ -117,15 +128,57 @@ const NominationEdit: NextPageWithLayout = () => {
                                         </Form.Group>
                                         {/* extras */}
                                         <Form.Group  >
-                                            <Form.Label className='mx-2 '>Теги</Form.Label>
-                                            <div className='d-flex justify-content-center flex-wrap'>
-                                                {globalConfig.nominationTags.map(tag => {
-                                                    const tags = localNomination.tags as string[]
-                                                    return <div className='mx-1' key={tag} onClick={() => { setLocalNomination({ ...localNomination, tags: tags.includes(tag) ? tags.filter(x => x != tag) : [...tags, tag] }) }}>
-                                                        <Badge bg={tags.includes(tag) ? 'primary' : 'danger'}>{tag}</Badge>
-                                                    </div>
-                                                })}
-                                            </div>
+                                            <Form.Label className='mx-2 '>Доп</Form.Label>
+                                            <Table variant='dark' >
+                                                <tbody>
+                                                    <tr>
+                                                        <th>type</th>
+                                                        <th>required</th>
+                                                        <th>question</th>
+                                                    </tr>
+                                                    {(localNomination.extras as unknown as NominationExtra[]).map((e, i) => <tr key={i}>
+                                                        <td><Form.Select defaultValue={e.type} onChange={(evt) =>
+                                                            setLocalNomination({
+                                                                ...localNomination,
+                                                                extras: (localNomination.extras as unknown as NominationExtra[]).map((x, j) => i == j ? { ...x, type: evt.target.value } : x) as any,
+                                                            })}
+                                                        >
+                                                            {globalConfig.nominationExtraTypes.map(x => <option key={x} value={x}>{x}</option>)}
+                                                        </Form.Select></td>
+                                                        <td><Form.Check className=' mt-2' type={'switch'} defaultChecked={e.required} onChange={(e) => setLocalNomination({
+                                                            ...localNomination,
+                                                            extras: (localNomination.extras as unknown as NominationExtra[]).map((x, j) => i == j ? { ...x, required: !e.target.checked } : x) as any,
+                                                        })}
+                                                        /></td>
+                                                        <td><EdiText
+                                                            onSave={(text) => setLocalNomination({
+                                                                ...localNomination,
+                                                                extras: (localNomination.extras as unknown as NominationExtra[]).map((x, j) => i == j ? { ...x, question: text } : x) as any,
+                                                            })}
+                                                            viewProps={{
+                                                                className: ' text-center',
+                                                            }}
+                                                            containerProps={{
+                                                                className: 'd-flex justify-content-center'
+                                                            }}
+                                                            editButtonProps={{ style: { visibility: 'hidden', display: 'none' } }}
+                                                            editOnViewClick
+                                                            value={e.question || ''}
+                                                            validation={(text) => text.length > 1}
+                                                        /></td>
+                                                    </tr>)}
+                                                    <tr onClick={() => setLocalNomination({
+                                                        ...localNomination,
+                                                        extras: [...(localNomination.extras as unknown as NominationExtra[]), {
+                                                            type: 'Raw Link',
+                                                            question: 'Ссылка?',
+                                                            required: false
+                                                        }] as any,
+                                                    })}>
+                                                        <td className='text-center' colSpan={3} >+</td>
+                                                    </tr>
+                                                </tbody>
+                                            </Table>
                                         </Form.Group>
                                         <Form.Group className='mt-2'>
                                             <Button variant='primary' disabled={isSaving} onClick={saveChanges}>Save</Button>
@@ -135,7 +188,7 @@ const NominationEdit: NextPageWithLayout = () => {
                                 </Card> :
                                 <ReactPlaceholder showLoadingAnimation ready={false}
                                     customPlaceholder={<div className='w-100 mw-100' >
-                                        <RectShape color='#3f574c' className='my-2' style={{ height: '100%', width: `100%`, borderRadius: 15 }} />
+                                        <RectShape color='#3f574c' className='my-2' style={{ height: '600px', width: `100%`, borderRadius: 15 }} />
                                     </div>}>
                                 </ReactPlaceholder>
                         }
@@ -145,25 +198,7 @@ const NominationEdit: NextPageWithLayout = () => {
 
 
             </Col>
-            <Col lg={5}>
-                {/* <Card bg='dark' text='light'>
-                    <Card.Header className='text-center'>
-                        <h1>Превью</h1>
-                    </Card.Header>
-                </Card>
-                <div className='mx-5'>
-                    {localNomination ? <NominationPreview nomination={localNomination} /> : <NominationPlaceholder />}
-                </div>
-                <Row>
-                    <Col sm='7'>{localNomination ? <NominationPreview nomination={localNomination} /> : <NominationPlaceholder />}</Col>
-                    <Col sm='5'>{localNomination ? <NominationPreview nomination={localNomination} /> : <NominationPlaceholder />}</Col>
-                </Row>
-                <Row>
-
-                </Row> */}
-
-
-            </Col>
+            <Col lg={1}></Col>
         </Row >
     </div >
 }

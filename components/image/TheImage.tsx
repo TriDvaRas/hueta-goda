@@ -1,8 +1,8 @@
 import { AspectRatio, ImageSize } from '@prisma/client';
 import axios, { AxiosError } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    Card, Form, Image, Image as ReactImage, ProgressBar,
+    Card, Form, Image as ReactImage, ProgressBar,
 } from 'react-bootstrap';
 
 interface Props {
@@ -13,6 +13,10 @@ interface Props {
 export default function TheImage(props: Props) {
     const { imageId, size, ar } = props
     const [src, setSrc] = useState(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`);
+    useEffect(() => {
+        setSrc(`/api/images/${imageId}?size=${size}`)
+    }, [imageId, size])
+
     if (!imageId) {
         return (
             <div
@@ -22,10 +26,12 @@ export default function TheImage(props: Props) {
                     overflow: 'hidden',
                     maxWidth: '100%',
                     maxHeight: '100%',
+                    height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
+                    width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
                     margin: '0 auto',
                 }}
             >
-                <Image
+                <ReactImage
                     className={` ${ar ? `ar-${ar}` : ''} `}
                     src={`/errorAvatar.jpg`}
                     alt='fuck'
@@ -33,9 +39,11 @@ export default function TheImage(props: Props) {
                         opacity: .7,
                         maxWidth: '100%',
                         maxHeight: '100%',
+                        height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
+                        width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
                         display: 'block',
                     }}
-                // onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }}
+                    onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }}
                 />
             </div>
         )
@@ -48,10 +56,12 @@ export default function TheImage(props: Props) {
                 overflow: 'hidden',
                 maxWidth: '100%',
                 maxHeight: '100%',
+                height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
+                width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
                 margin: '0 auto',
             }}
         >
-            <Image
+            <ReactImage
                 className={`${ar ? `ar-${ar}` : ''} `}
                 src={src}
                 onLoad={() => setSrc(`/api/images/${imageId}?size=${size}`)}
@@ -59,9 +69,11 @@ export default function TheImage(props: Props) {
                 style={{
                     maxWidth: '100%',
                     maxHeight: '100%',
+                    height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
+                    width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
                     display: 'block',
                 }}
-            // onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }}
+                onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }}
             />
         </div>
     )

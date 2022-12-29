@@ -1,4 +1,4 @@
-import { Image, ImageSize } from '@prisma/client'
+import { ImageSize } from '@prisma/client'
 import multer from 'multer'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import nc from "next-connect"
@@ -53,7 +53,7 @@ export default router
                     }
                 })),
             })
-            res.status(400).json(original)
+            res.json(original)
         }
         else
             res.status(400).json({ error: 'No file', status: 400 })

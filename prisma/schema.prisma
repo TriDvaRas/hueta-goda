@@ -113,7 +113,7 @@ model Nomination {
 
   name         String
   description  String?
-  extras       Json        @default("{}")
+  extras       Json        @default("[]")
   aspectRatio  AspectRatio @default(TALL)
   author       User        @relation(fields: [authorUserId], references: [id])
   authorUserId String
@@ -136,10 +136,12 @@ model Nominee {
   extras     Json       @default("{}")
   nomination Nomination @relation(fields: [nominationId], references: [id])
   author     User       @relation(fields: [authorUserId], references: [id])
+  imageScale    Float  @default(1)
+  imagePosition String @default("50% 50%")
 
-  nominationId String
-  authorUserId String
-  imageId      String
+  nominationId  String
+  authorUserId  String
+  imageId       String
 
   @@map("nominee")
 }
