@@ -35,6 +35,7 @@
     "react-dropzone": "^14.2.3",
     "react-editext": "^5.1.0",
     "react-placeholder": "^4.1.0",
+    "react-spinners": "^0.13.7",
     "sass": "^1.57.1",
     "seedrandom": "^3.0.5",
     "sharp": "^0.31.3",

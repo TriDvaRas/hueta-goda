@@ -1,3 +1,4 @@
+import { AspectRatio } from '@prisma/client';
 import _ from 'lodash';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
@@ -15,21 +16,21 @@ interface Props {
     nomination: NominationFull
 }
 
-export default function NominationFullDisplayWide(props: Props) {
+export default function NominationFullDisplayWideCompact(props: Props) {
     const { nomination, children } = props
     const { data: session, status: sessionStatus } = useSession()
     const router = useRouter()
     const [showAdminTools, setShowAdminTools] = useLocalStorage('showAdminTools', false)
     const nomineeTop = _.sortBy(nomination.Nominee || [], ['position', 'asc'])
     return <div>
-        <Card className='mt-3 mx-5' bg='dark' text='light' style={{ borderRadius: 20 }}>
+        <Card className='mt-3 ' bg='dark' text='light' style={{ borderRadius: 20, overflow: 'hidden' }}>
             <Card.Body>
-                <Row>
-                    <Col className='ps-3 flex-grow-1 d-flex align-items-start flex-column ' lg={9} >
+                <Row lg={11}>
+                    <Col className='ps-3 flex-grow-1 d-flex align-items-start flex-column ' lg={7} >
                         <ReactPlaceholder color={'#3f574c' as any} ready={!!nomination} >
                             <Card.Title className=' fs-1 fw-bolder' >{nomination.name}</Card.Title>
                             <Card.Subtitle className='mb-2'>
-                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/nominations?tags=${x}`}><Badge bg={'custom'} className={'me-1'}
+                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/nominations?tags${x}`}><Badge bg={'custom'} className={'me-1'}
                                     style={{
                                         backgroundColor: randomSeededColor(x),
                                     }}>{x}</Badge></Link>)}
@@ -42,22 +43,17 @@ export default function NominationFullDisplayWide(props: Props) {
                             {children}
                         </ReactPlaceholder>
                     </Col>
-                    <Col lg={3} className='px-2 d-flex align-items-center flex-row bg-dark-850 m-n3 py-2' style={{ borderRadius: 20 }}>
+                    <Col lg={4} className={`
+                    
+                    d-flex align-items-center flex-row bg-dark-850 my-n3 `} style={{ borderRadius: 20, marginRight: -5 }}>
                         {
                             nomination ?
-                                <NominationWithNomineeDisplay nominee={nomineeTop[0]} nomination={nomination} textSource='none' /> :
+                                <NominationWithNomineeDisplay
+                                    // compactWidth={([AspectRatio.ULTRAWIDE, AspectRatio.WIDE, AspectRatio.SQUARE] as AspectRatio[]).includes(nomination?.aspectRatio)} 
+                                    nominee={nomineeTop[0]}
+                                    nomination={nomination} textSource='none' imageSize='MEDIUM' /> :
                                 <NominationPlaceholder noText />
                         }
-                        {/* {
-                            nomination ?
-                                <NominationWithNomineeDisplay className='mx-1' nominee={nomineeTop[1]} nomination={nomination} textSource='none' /> :
-                                <NominationPlaceholder noText />
-                        }
-                        {
-                            nomination ?
-                                <NominationWithNomineeDisplay nominee={nomineeTop[2]} nomination={nomination} textSource='none' /> :
-                                <NominationPlaceholder noText />
-                        } */}
                     </Col>
 
                 </Row>

@@ -22,14 +22,14 @@ export default function NominationFullDisplayWide(props: Props) {
     const [showAdminTools, setShowAdminTools] = useLocalStorage('showAdminTools', false)
     const nomineeTop = _.sortBy(nomination.Nominee || [], ['position', 'asc'])
     return <div>
-        <Card className='mt-3 mx-5' bg='dark' text='light' style={{ borderRadius: 20 }}>
+        <Card className='mt-3 mx-2' bg='dark' text='light' style={{ borderRadius: 20 }}>
             <Card.Body>
                 <Row>
                     <Col className='ps-3 flex-grow-1 d-flex align-items-start flex-column ' lg={4} >
                         <ReactPlaceholder color={'#3f574c' as any} ready={!!nomination} >
                             <Card.Title className=' fs-1 fw-bolder' >{nomination.name}</Card.Title>
                             <Card.Subtitle className='mb-2'>
-                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/nominations?tags=${x}`}><Badge bg={'custom'} className={'me-1'}
+                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/gallery/nominations?tag=${x}`}><Badge bg={'custom'} className={'me-1'}
                                     style={{
                                         backgroundColor: randomSeededColor(x),
                                     }}>{x}</Badge></Link>)}
@@ -47,17 +47,17 @@ export default function NominationFullDisplayWide(props: Props) {
                     <Col lg={7} className='px-2 d-flex align-items-center flex-row bg-dark-850 m-n3 py-2' style={{ borderRadius: 20 }}>
                         {
                             nomination ?
-                                <NominationWithNomineeDisplay nominee={nomineeTop[0]} nomination={nomination} textSource='none' /> :
+                                <NominationWithNomineeDisplay nominee={nomineeTop[0]} nomination={nomination} textSource='none' imageSize='MEDIUM' /> :
                                 <NominationPlaceholder noText />
                         }
                         {
                             nomination ?
-                                <NominationWithNomineeDisplay className='mx-1' nominee={nomineeTop[1]} nomination={nomination} textSource='none' /> :
+                                <NominationWithNomineeDisplay className='mx-1' nominee={nomineeTop[1]} nomination={nomination} textSource='none' imageSize='MEDIUM' /> :
                                 <NominationPlaceholder noText />
                         }
                         {
                             nomination ?
-                                <NominationWithNomineeDisplay nominee={nomineeTop[2]} nomination={nomination} textSource='none' /> :
+                                <NominationWithNomineeDisplay nominee={nomineeTop[2]} nomination={nomination} textSource='none' imageSize='MEDIUM' /> :
                                 <NominationPlaceholder noText />
                         }
                     </Col>

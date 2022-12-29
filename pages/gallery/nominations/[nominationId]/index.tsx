@@ -6,10 +6,10 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useLocalStorage } from 'usehooks-ts';
-import NominationFullDisplayWide from '../../../components/displays/NominationFullDisplayWide';
-import GetThinLayout from '../../../layouts/ThinLayout';
-import { NominationFull } from '../../../types/extendedApiTypes';
-import { NextPageWithLayout } from '../../_app';
+import NominationFullDisplayWide from '../../../../components/displays/NominationFullDisplayWide';
+import GetThinLayout from '../../../../layouts/ThinLayout';
+import { NominationFull } from '../../../../types/extendedApiTypes';
+import { NextPageWithLayout } from '../../../_app';
 
 const NominationEdit: NextPageWithLayout = () => {
     const { data: session, status: sessionStatus } = useSession()

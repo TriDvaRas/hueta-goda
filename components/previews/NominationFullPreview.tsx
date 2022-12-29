@@ -1,7 +1,8 @@
 import { ImageSize, Nomination } from '@prisma/client';
+import { useRef, useEffect } from 'react';
 import { Image } from 'react-bootstrap';
 import EdiText from 'react-editext';
-import { RectShape } from 'react-placeholder/lib/placeholders';
+import { RectShape, text } from 'react-placeholder/lib/placeholders';
 import { useElementSize } from 'usehooks-ts';
 import { NominationFull } from '../../types/extendedApiTypes';
 import TheImage from '../image/TheImage';
@@ -17,7 +18,21 @@ export default function NominationFullPreview(props: Props) {
     let [squareRef, { width }] = useElementSize()
     if (!width) width = 30
     const nominee = (nomineePosition ? (nomination.Nominee || []).find(x => x.position == nomineePosition) : (nomination.Nominee || [])[0])
-
+    const containerRef = useRef<HTMLDivElement>(null);
+    const textRef = useRef<HTMLDivElement>(null);
+    const text = nomination.name
+    useEffect(() => {
+        if (containerRef.current && textRef.current) {
+            const containerWidth = containerRef.current.offsetWidth;
+            const containerHeight = containerRef.current.offsetHeight;
+            let fontSize = width / 8;
+            textRef.current.style.fontSize = `${fontSize}px`;
+            while (textRef.current.offsetWidth > containerWidth || textRef.current.offsetHeight > containerHeight) {
+                fontSize -= 1;
+                textRef.current.style.fontSize = `${fontSize}px`;
+            }
+        }
+    }, [width, text]);
     return (
         <div className='w-100 mw-100 ' ref={squareRef}>
             <div className='py-2' style={{
@@ -27,7 +42,7 @@ export default function NominationFullPreview(props: Props) {
                 justifyContent: 'center',
             }}>
                 {nominee?.imageId ?
-                    <TheImage imageId={nominee?.imageId} /> :
+                    <TheImage imageId={nominee?.imageId} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
                     <TheImage ar='TALL' />
                 }
             </div>
@@ -44,13 +59,16 @@ export default function NominationFullPreview(props: Props) {
                         containerProps={{
                             className: 'd-flex justify-content-center'
                         }}
+
                         editButtonProps={{ style: { visibility: 'hidden', display: 'none' } }}
                         validation={(t) => t.length > 0}
                         validationMessage='Подлиньше нужно. Спасибо.'
                         editOnViewClick
                         onSave={onTextEdit}
                     /> :
-                    <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
+                    <div ref={containerRef} className='w-100' style={{ height: width / 4 }}>
+                        <h1 ref={textRef} className='impact text-center' >{(text || 'Sample Text').toUpperCase()}</h1>
+                    </div>
             ) : name == 'nominee' ? (
 
                 onTextEdit ?

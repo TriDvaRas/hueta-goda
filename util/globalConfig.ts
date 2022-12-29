@@ -1,22 +1,23 @@
 import { AspectRatio, Nomination, Nominee } from '@prisma/client';
+import _ from 'lodash';
 export const globalConfig = {
-    defaultNominationsPageSize: 60,
+    defaultNominationsPageSize: 120,
     dummyNominee: {
         comment: '',
-        name: 'Sample Text',
+        name: '',
         position: 1,
-        extras:{},
+        extras: {},
     } as Nominee,
     dummyNomination: {
-        aspectRatio:AspectRatio.TALL,
-        description:'',
-        extras:[],
-        name:'Sample Text',
-        popularity:0,
-        priority:0,
-        tags:[],
+        aspectRatio: AspectRatio.TALL,
+        description: 'Sample Text',
+        extras: [],
+        name: '',
+        popularity: 0,
+        priority: 0,
+        tags: [],
     } as unknown as Nomination,
-    nominationTags:[
+    nominationTags: _.sortBy([
         'Anime',
         'Content',
         'Classic',
@@ -32,8 +33,10 @@ export const globalConfig = {
         'Photo',
         'Love Live',
         'osu!',
-    ],
-    nominationExtraTypes:[
+        'Rice Friends',
+        'Music',
+    ]),
+    nominationExtraTypes: [
         'Raw Link',
         'Spotify',
         'YouTube',

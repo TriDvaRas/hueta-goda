@@ -40,8 +40,16 @@ const Bar = ({ }: Props) => {
                         activeKey={router.asPath}
                         onSelect={(selectedKey) => router.push(selectedKey as string)}
                     >
-                        <Nav.Link eventKey='/nominations'>
-                            Номинации
+                        <NavDropdown title={'Галерея'} menuVariant='dark'>
+                            {/* <NavDropdown.Item className='active-bg-override' eventKey='/wheels'>
+                                Номинации
+                            </NavDropdown.Item> */}
+                            <NavDropdown.Item className='active-bg-override' as={Link} href='/people'>
+                                Люди
+                            </NavDropdown.Item>
+                        </NavDropdown>
+                        <Nav.Link as={Link} href='/nominations'>
+                            Моя Хуйня<sup>™</sup>
                         </Nav.Link>
                         {session?.user.role === UserRole.ADMIN && <Form.Check className=' mt-2' type={'switch'} defaultChecked={showAdminTools} onChange={(e) => setShowAdminTools(e.target.checked)} />}
                     </Nav>

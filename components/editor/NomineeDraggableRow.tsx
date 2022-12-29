@@ -10,9 +10,11 @@ interface Props {
     moveRow: (dragIndex: number, hoverIndex: number) => void;
     ar?: AspectRatio
     onEditClick?: (nominee: Nominee) => void
+    valid?: boolean
+    selected?: boolean
 }
 export default function NomineeDraggableRow(props: Props) {
-    const { index, moveRow, nominee, ar, onEditClick } = props
+    const { index, moveRow, nominee, ar, onEditClick, valid, selected } = props
     const ref = useRef<any>(null);
 
     const [, drop] = useDrop<any, any>({
@@ -53,12 +55,14 @@ export default function NomineeDraggableRow(props: Props) {
     drag(drop(ref));
 
     return (
-        <tr ref={ref} className='d-flex w-100 align-items-center py-1 border-bottom border-secondary ' style={{ fontSize: '125%' }}>
-            <div style={{ width: 45, height: 45 }}><Crown position={nominee.position} size={45} /></div>
-            <div className='me-2' style={{ height: 55 }}><TheImage ar={ar || AspectRatio.SQUARE} imageId={nominee.imageId} size={ImageSize.PREVIEW} /></div>
-            <div className='me-2'>{nominee.name}</div>
-            {/* <div>{nominee.imageId}</div> */}
-            {onEditClick && <div className='ms-auto me-3' onClick={() => onEditClick(nominee)}><i className="bi bi-pencil"></i></div>}
+        <tr ref={ref} className='d-flex w-100 align-items-center   ' style={{ fontSize: '125%' }}>
+            <td className='d-flex w-100 align-items-center py-1 border-bottom border-secondary ' >
+                <div style={{ width: 45, height: 45 }}><Crown position={nominee.position} size={45} /></div>
+                <div className='me-2' style={{ height: 55 }}><TheImage position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.PREVIEW} ar={ar || AspectRatio.SQUARE} imageId={nominee.imageId} /></div>
+                <div className='me-2'>{nominee.name}</div>
+                {valid == false&&<i className="text-warning bi bi-exclamation-triangle-fill"></i>}
+                {onEditClick && <div className='ms-auto me-3' onClick={() => onEditClick(nominee)}><i className="bi bi-pencil"></i></div>}
+            </td>
         </tr>
     );
 }

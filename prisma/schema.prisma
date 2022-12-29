@@ -130,18 +130,20 @@ model Nominee {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name       String
-  comment    String?
-  position   Int        @default(-1)
-  extras     Json       @default("{}")
-  nomination Nomination @relation(fields: [nominationId], references: [id])
-  author     User       @relation(fields: [authorUserId], references: [id])
-  imageScale    Float  @default(1)
-  imagePosition String @default("50% 50%")
+  name          String
+  comment       String?
+  position      Int        @default(-1)
+  extras        Json       @default("{}")
+  hasSpoilers   Boolean    @default(false)
+  hasNSFW       Boolean    @default(false)
+  nomination    Nomination @relation(fields: [nominationId], references: [id])
+  author        User       @relation(fields: [authorUserId], references: [id])
+  imageScale    Float      @default(1)
+  imagePosition String     @default("50% 50%")
 
-  nominationId  String
-  authorUserId  String
-  imageId       String
+  nominationId String
+  authorUserId String
+  imageId      String
 
   @@map("nominee")
 }

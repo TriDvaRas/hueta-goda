@@ -1,4 +1,4 @@
-import { ImageSize, Nomination } from '@prisma/client';
+import { ImageSize, Nomination, Nominee } from '@prisma/client';
 import { Image } from 'react-bootstrap';
 import EdiText from 'react-editext';
 import { RectShape } from 'react-placeholder/lib/placeholders';
@@ -9,9 +9,10 @@ import TheImage from '../image/TheImage';
 interface Props {
     nomination: NominationFull | Nomination,
     onTextEdit?: (text: string) => void
+    nominee?: Nominee
 }
 export default function NominationPreview(props: Props) {
-    const { nomination,  onTextEdit } = props
+    const { nomination, onTextEdit, nominee } = props
     let [squareRef, { width }] = useElementSize()
     if (!width) width = 30
     return (
@@ -22,7 +23,7 @@ export default function NominationPreview(props: Props) {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                <TheImage ar={nomination.aspectRatio} />
+                <TheImage ar={nomination.aspectRatio} imageId={nominee?.imageId} position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.MEDIUM}/>
             </div>
             {
                 onTextEdit ?
@@ -43,7 +44,7 @@ export default function NominationPreview(props: Props) {
                         editOnViewClick
                         onSave={onTextEdit}
                     /> :
-                    <h1 className='Impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
+                    <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
             }
         </div>
 

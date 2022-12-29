@@ -11,9 +11,10 @@ interface Props {
     onChange: (nominees: Nominee[]) => void
     ar?: AspectRatio
     onEditClick?: (nominee: Nominee) => void
+    nomineesValidation?: boolean[]
 }
 export default function NomineesTopEditor(props: Props) {
-    const { nominees, onChange, ar, onEditClick } = props
+    const { nominees, onChange, ar, onEditClick, nomineesValidation } = props
     const { data: session, status: sessionStatus } = useSession()
     const moveRow = (dragIndex: number, hoverIndex: number) => {
         const newRows = [...nominees];
@@ -22,25 +23,15 @@ export default function NomineesTopEditor(props: Props) {
         const minPos = Math.min(...newRows.map(x => x.position))
         onChange(newRows.map((x, i) => ({ ...x, position: i + minPos })));
     };
-    const addRow = () => {
-        if (session)
-            onChange([...nominees, {
-                ...globalConfig.dummyNominee,
-                position: Math.max(...nominees.map(x => x.position)) + 1,
-                authorUserId: session.user.id,
-                imageId: `${Math.random()}`
-            }])
-    }
     return (
         <table>
-            <DndProvider backend={HTML5Backend}>
-                <tbody>
+            <tbody>
+                <DndProvider backend={HTML5Backend}>
                     {nominees.map((nominee, index) => (
-                        <NomineeDraggableRow ar={ar} key={index} index={index} nominee={nominee} moveRow={moveRow} onEditClick={onEditClick} />
+                        <NomineeDraggableRow valid={!nomineesValidation || nomineesValidation[index]} ar={ar} key={index} index={index} nominee={nominee} moveRow={moveRow} onEditClick={onEditClick} />
                     ))}
-                    <tr className='text-center fs-3 bg-secondary-hover' onClick={addRow}>+</tr>
-                </tbody>
-            </DndProvider>
+                </DndProvider>
+            </tbody>
         </table>
     )
 }

@@ -1,4 +1,5 @@
 import { ImageSize, Nomination, Nominee } from '@prisma/client';
+import { useEffect, useRef } from 'react';
 import EdiText from 'react-editext';
 import { RectShape } from 'react-placeholder/lib/placeholders';
 import { useElementSize } from 'usehooks-ts';
@@ -21,6 +22,23 @@ export default function NominationWithNomineeDisplayEditable(props: Props) {
     let [squareRef, { width }] = useElementSize()
     if (!width) width = 30
     const text = textSource == 'nomination' ? nomination.name : nominee?.name
+
+    const containerRef = useRef<HTMLDivElement>(null);
+    const textRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (containerRef.current && textRef.current) {
+            const containerWidth = containerRef.current.offsetWidth;
+            const containerHeight = containerRef.current.offsetHeight;
+            let fontSize = width / 8;
+            textRef.current.style.fontSize = `${fontSize}px`;
+            while (textRef.current.offsetWidth > containerWidth || textRef.current.offsetHeight > containerHeight) {
+                fontSize -= 1;
+                textRef.current.style.fontSize = `${fontSize}px`;
+            }
+        }
+    }, [width, text]);
+
     return (
         <div className='w-100 mw-100 image-upload-container-big' ref={squareRef}>
             <div className='py-2' style={{
@@ -34,7 +52,9 @@ export default function NominationWithNomineeDisplayEditable(props: Props) {
                     <TheImageUpload size={'LARGE'} onUploaded={onImageChange} onError={() => { }} ar={nomination.aspectRatio} />
                 }
             </div>
-            {textSource !== 'none' && <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(text || 'Sample Text').toUpperCase()}</h1>}
+            {textSource !== 'none' && <div ref={containerRef} className='w-100' style={{ height: width / 4 }}>
+                <h1 ref={textRef} className='impact text-center' >{(text || 'Sample Text').toUpperCase()}</h1>
+            </div>}
         </div>
 
     )

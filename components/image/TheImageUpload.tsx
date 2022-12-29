@@ -7,6 +7,7 @@ import {
     Card, Form, Image as ReactImage, ProgressBar,
 } from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
+import { BarLoader } from 'react-spinners';
 import { HGApiError } from '../../types/hg-api';
 import { parseApiError } from '../../util/error';
 import { ImageMeta } from '../../util/selectPartials';
@@ -26,8 +27,10 @@ export default function TheImageUpload(props: Props) {
     const { imageId, size, ar, onUploaded, onError, onImageMove, scale, position, onImageZoom } = props
     const [src, setSrc] = useState(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`);
     useEffect(() => {
-        setSrc(`/api/images/${imageId}?size=${size}`)
-    }, [imageId, size])
+        setSrc(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`)
+        setIsBlured(true)
+    }, [imageId])
+    const [isBlured, setIsBlured] = useState(true)
     const [newImagePreview, setNewImagePreview] = useState<string | undefined>(undefined)
     const [isDraging, setIsDraging] = useState(false)
     const [isUploading, setIsUploading] = useState(false)
@@ -152,6 +155,9 @@ export default function TheImageUpload(props: Props) {
 
 
     function handleDrop(files: any) {
+        if (isUploading) {
+            return
+        }
         const preview = URL.createObjectURL(files[0])
         setNewImagePreview(preview)
         // if (onDrop)
@@ -176,7 +182,7 @@ export default function TheImageUpload(props: Props) {
                 onError(parseApiError(err))
             })
     }
-    if (!imageId) {
+    if (!imageId || isUploading) {
         return (
             < Dropzone
                 disabled={isUploading}
@@ -212,7 +218,20 @@ export default function TheImageUpload(props: Props) {
                         margin: '0 auto',
                     }}
                 >
-                    <div key={1} className='image-upload-overlay d-flex align-items-center justify-content-center' style={{ zIndex: 99 }}><i key={2} className="bi bi-upload " style={{ fontSize: '1.75rem', }}></i></div>
+                    {isUploading ?
+                        <div className='w-100 h-100 px-5 d-flex align-items-center justify-content-center' style={{
+                            backgroundColor: '#0008',
+                            zIndex: 199,
+                            position: 'absolute',
+                        }}>
+                            <BarLoader color={'var(--bs-primary)'}
+                                width={'50%'}
+                                height={5}
+                                style={{
+                                }} />
+                        </div> :
+                        <div key={1} className='image-upload-overlay d-flex align-items-center justify-content-center' style={{ zIndex: 99 }}><i key={2} className="bi bi-upload " style={{ fontSize: '1.75rem', }}></i></div>
+                    }
                     <ReactImage
                         className={` ${ar ? `ar-${ar}` : ''} `}
                         src={`/errorAvatar.jpg`}
@@ -301,10 +320,17 @@ export default function TheImageUpload(props: Props) {
                             transform: `scale(${scale || 1})`,
                             // opacity: 0.5,
                             // overflow: 'visible',
-                            filter: src.endsWith(size) ? 'none' : 'blur(20px)'
+                            filter: isBlured ? 'blur(20px)' : 'none'
                         }}
                         onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }}
-                        onLoad={() => setSrc(`/api/images/${imageId}?size=${size}`)}
+                        onLoad={() => {
+                            if (src.endsWith(size))
+                                setIsBlured(false)
+                            else {
+                                setIsBlured(true)
+                                setSrc(`/api/images/${imageId}?size=${size}`)
+                            }
+                        }}
                     // onWheel={handleImageZoom as any}
                     />
                 </div>
