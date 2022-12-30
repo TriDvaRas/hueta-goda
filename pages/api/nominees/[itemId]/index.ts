@@ -19,6 +19,10 @@ export default router
             const nomination = await prisma.nomination.findUnique({
                 where: {
                     id: req.params.itemId
+                },
+                include: {
+                    author: true,
+                    NominationLike: true
                 }
             })
             res.send(nomination);
@@ -34,7 +38,11 @@ export default router
             //TODO validation
             const nomination = await prisma.nomination.update({
                 where: { id: req.params.itemId },
-                data: body
+                data: body,
+                include: {
+                    author: true,
+                    NominationLike: true
+                }
             })
             res.send(nomination);
         } catch (error: any) {

@@ -59,7 +59,7 @@ const NominationsHome: NextPageWithLayout = () => {
 
   return <div>
     <Card bg='dark' className='my-3 p-2 d-flex align-items-center justify-content-between flex-row'>
-      <Card.Title className=' ms-3 my-0 me-auto' style={{ fontSize: '200%', fontWeight: '600' }}>Моя Хуета<sup>™</sup></Card.Title>
+      <Card.Title className=' ms-3 my-0 me-auto' style={{ fontSize: '200%', fontWeight: '600' }}>Моя Хуета Года<sup>™</sup></Card.Title>
 
       <FloatingLabel className=' me-1 ' controlId="floatingSelect" label="Вид">
         <Form.Select value={router.query.viewMode || 'compact'} onChange={e => {
@@ -115,7 +115,15 @@ const NominationsHome: NextPageWithLayout = () => {
           <Row lg={1} className='mb-2 mx-2'>
             {nominationsLoading || !filteredItems ?
               "_".repeat(4).split('').map((x, i) => <Col key={i} className='mt-2'><NominationFullWidePlaceholder /></Col>) :
-              filteredItems.map((nomination, i) => <NominationFullDisplayWide key={i} nomination={nomination}>
+              filteredItems.map((nomination, i) => <NominationFullDisplayWide
+                updateNominationLikes={(newLikes) => nominationsPage && setNominationsPage({
+                  ...nominationsPage,
+                  items: nominationsPage.items.map(x => x.id == nomination.id ? {
+                    ...x,
+                    NominationLike: newLikes
+                  } : x)
+                })}
+                key={i} nomination={nomination}>
                 <div className='mt-auto d-flex align-items-start'>
                   <Link href={`/nominations/${nomination.id}/my`}>
                     <Button className='me-2 text-light' variant={(nomination?.Nominee?.length || 0) > 0 ? 'secondary' : 'primary'}>
@@ -134,7 +142,15 @@ const NominationsHome: NextPageWithLayout = () => {
           <Row lg={2} className='mb-2 mx-2'>
             {nominationsLoading || !filteredItems ?
               "_".repeat(8).split('').map((x, i) => <Col key={i} className='mt-2'><NominationFullWidePlaceholder /></Col>) :
-              filteredItems.map((nomination, i) => <NominationFullDisplayWideCompact key={i} nomination={nomination}>
+              filteredItems.map((nomination, i) => <NominationFullDisplayWideCompact
+                updateNominationLikes={(newLikes) => nominationsPage && setNominationsPage({
+                  ...nominationsPage,
+                  items: nominationsPage.items.map(x => x.id == nomination.id ? {
+                    ...x,
+                    NominationLike: newLikes
+                  } : x)
+                })}
+                key={i} nomination={nomination}>
                 <div className='mt-auto pt-3 d-flex align-items-start'>
                   <Link href={`/nominations/${nomination.id}/my`}>
                     <Button className='me-2 text-light' variant={(nomination?.Nominee?.length || 0) > 0 ? 'secondary' : 'primary'}>

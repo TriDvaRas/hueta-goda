@@ -24,7 +24,6 @@ const NominationsHome: NextPageWithLayout = () => {
   const [page, setPage] = useState(router.query.page || 1)
   const [nominationsPage, setNominationsPage] = useState<HGApiPaginationResponse<NominationWithAuthor[]> | undefined>(undefined)
   const [nominationsLoading, setNominationsLoading] = useState(true)
-  const [fillingPathIds, setFillingPathIds] = useLocalStorage('fillingPathIds', [])
 
   useEffect(() => {
     setNominationsLoading(true)
@@ -73,7 +72,15 @@ const NominationsHome: NextPageWithLayout = () => {
     <Row lg={2} className='mb-2 mx-2'>
       {nominationsLoading || !filteredItems ?
         "_".repeat(8).split('').map((x, i) => <Col key={i} className='mt-2'><NominationFullWidePlaceholder /></Col>) :
-        filteredItems.map((nomination, i) => <Col key={i} className='mt-3'><NominationDisplayWideCompact  nomination={nomination}>
+        filteredItems.map((nomination, i) => <Col key={i} className='mt-3'><NominationDisplayWideCompact
+          updateNominationLikes={(newLikes) => nominationsPage && setNominationsPage({
+            ...nominationsPage,
+            items: nominationsPage.items.map(x => x.id == nomination.id ? {
+              ...x,
+              NominationLike: newLikes
+            } : x)
+          })}
+          nomination={nomination}>
         </NominationDisplayWideCompact></Col>)
       }
     </Row>

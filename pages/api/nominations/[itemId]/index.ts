@@ -24,17 +24,18 @@ export default router
                 where: {
                     id: req.query.itemId as string
                 },
-                include: req.query.full == 'true' && req.session ? {
+                include: {
                     author: true,
-                    Nominee: {
+                    Nominee: req.query.full == 'true' && req.session ? {
                         where: {
                             authorUserId: req.session.user.id
                         },
                         orderBy: {
                             position: 'asc'
                         }
-                    }
-                } : undefined
+                    } : false,
+                    NominationLike: true
+                }
             })
             res.send(nomination);
 
@@ -51,17 +52,18 @@ export default router
             const nomination = await prisma.nomination.update({
                 where: { id: req.query.itemId as string },
                 data: body,
-                include: req.query.full == 'true' ? {
+                include: {
                     author: true,
-                    Nominee: {
+                    Nominee: req.query.full == 'true' ? {
                         where: {
                             authorUserId: req.session.user.id
                         },
                         orderBy: {
                             position: 'asc'
                         }
-                    }
-                } : undefined
+                    } : false,
+                    NominationLike: true
+                }
             })
             res.send(nomination);
         } catch (error: any) {

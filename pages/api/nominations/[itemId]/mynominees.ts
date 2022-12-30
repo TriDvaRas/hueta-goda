@@ -48,7 +48,8 @@ export default router
                         orderBy: {
                             position: 'asc'
                         }
-                    }
+                    },
+                    NominationLike: true
                 }
             }) as NominationFull
             if (!nomination) {

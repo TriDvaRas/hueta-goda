@@ -36,7 +36,8 @@ export default router
                         orderBy: {
                             position: 'asc'
                         }
-                    }
+                    },
+                    NominationLike: true
                 }
             })
             const totalItems = prisma.nomination.count();
@@ -74,7 +75,8 @@ export default router
                         orderBy: {
                             position: 'asc'
                         }
-                    }
+                    },
+                    NominationLike: true
                 }
             })
             res.send(nomination);

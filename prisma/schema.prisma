@@ -66,11 +66,12 @@ model User {
   image         String?
   role          UserRole  @default(USER)
 
-  accounts   Account[]
-  sessions   Session[]
-  Image      Image[]
-  Nomination Nomination[]
-  Nominee    Nominee[]
+  accounts       Account[]
+  sessions       Session[]
+  Image          Image[]
+  Nomination     Nomination[]
+  Nominee        Nominee[]
+  NominationLike NominationLike[]
 
   @@map("user")
 }
@@ -111,16 +112,17 @@ model Nomination {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  name         String
-  description  String?
-  extras       Json        @default("[]")
-  aspectRatio  AspectRatio @default(TALL)
-  author       User        @relation(fields: [authorUserId], references: [id])
-  authorUserId String
-  Nominee      Nominee[]
-  priority     Int         @default(0)
-  popularity   Int         @default(0)
-  tags         Json        @default("[]")
+  name           String
+  description    String?
+  extras         Json             @default("[]")
+  aspectRatio    AspectRatio      @default(TALL)
+  author         User             @relation(fields: [authorUserId], references: [id])
+  authorUserId   String
+  Nominee        Nominee[]
+  priority       Int              @default(0)
+  popularity     Int              @default(0)
+  tags           Json             @default("[]")
+  NominationLike NominationLike[]
 
   @@map("nomination")
 }
@@ -146,4 +148,18 @@ model Nominee {
   imageId      String
 
   @@map("nominee")
+}
+
+model NominationLike {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  nomination   Nomination @relation(fields: [nominationId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+  nominationId String
+  userId       String
+
+  @@unique([userId, nominationId])
+  @@map("nominationlike")
 }

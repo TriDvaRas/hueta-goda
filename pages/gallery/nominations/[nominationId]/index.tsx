@@ -35,7 +35,12 @@ const NominationEdit: NextPageWithLayout = () => {
 
     return <div>
         {nomination &&
-            <NominationFullDisplayWide nomination={nomination}>
+            <NominationFullDisplayWide
+                updateNominationLikes={(newLikes) => nomination && setNomination({
+                    ...nomination,
+                    NominationLike: newLikes
+                })}
+                nomination={nomination}>
                 <div className='mt-auto d-flex align-items-start'>
                     <Link href={`/nominations/${nomination.id}/my`}><Button className='me-2' variant={(nomination?.Nominee?.length || 0) > 0 ? 'secondary' : 'primary'}>
                         Заполнить <i className="bi bi-box-arrow-up-right"></i>
