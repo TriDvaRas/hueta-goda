@@ -61,8 +61,8 @@ model User {
   updatedAt     DateTime  @updatedAt
   name          String
   displayName   String?
-  email         String?   @unique @ignore
-  emailVerified DateTime? @ignore
+  email         String?   @unique 
+  emailVerified DateTime? 
   image         String?
   role          UserRole  @default(USER)
 
