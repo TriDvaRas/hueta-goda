@@ -59,7 +59,7 @@ const NominationsHome: NextPageWithLayout = () => {
 
   return <div>
     <Card bg='dark' className='my-3 p-2 d-flex align-items-center justify-content-between flex-row'>
-      <Card.Title className=' ms-3 my-0 me-auto' style={{ fontSize: '200%', fontWeight: '600' }}>Моя Хуйня<sup>™</sup></Card.Title>
+      <Card.Title className=' ms-3 my-0 me-auto' style={{ fontSize: '200%', fontWeight: '600' }}>Моя Хуета<sup>™</sup></Card.Title>
 
       <FloatingLabel className=' me-1 ' controlId="floatingSelect" label="Вид">
         <Form.Select value={router.query.viewMode || 'compact'} onChange={e => {

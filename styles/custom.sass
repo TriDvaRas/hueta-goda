@@ -8,6 +8,13 @@
 *
     // overflow-x: hidden
 
+.highlight-icon-on-hover
+    opacity: 0.7
+
+.highlight-icon-on-hover:hover
+    opacity: 1
+    text-shadow: 2px 2px 2px rgba(0,0,0,0.5)
+
 #__next,body,#app
     background-color: $gray-900
     min-height: 100vh
@@ -25,6 +32,18 @@ body
     // #root > div
     //     min-height: 100vh
     //     margin-bottom: 0
+.bg-dark-gradient-hover
+    background: linear-gradient(to right, #0000 0%, #24372E 80%)
+    transition: all .3s
+    width: 200px
+    font-size: 2.5em
+
+.bg-dark-gradient-hover:hover
+    width: 300px
+    font-size: 3em
+    
+.padding-right-on-hover:hover
+    padding-right: 32px
 
 .allow-text-overflow
     text-overflow: ellipsis

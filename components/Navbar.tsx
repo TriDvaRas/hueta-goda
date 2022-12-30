@@ -29,9 +29,9 @@ const Bar = ({ }: Props) => {
                     // backgroundColor: '#4c3b62'
                 }}
             >
-                <div onClick={() => router.push(`/`)}>
+                <Link href={`/`}>
                     <h3 className='mb-0 mx-3'>HG<span className='egg-text'></span></h3>
-                </div>
+                </Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav
@@ -41,16 +41,19 @@ const Bar = ({ }: Props) => {
                         onSelect={(selectedKey) => router.push(selectedKey as string)}
                     >
                         <NavDropdown title={'Галерея'} menuVariant='dark'>
-                            {/* <NavDropdown.Item className='active-bg-override' eventKey='/wheels'>
+                            <NavDropdown.Item className='active-bg-override' as={Link} passHref href='/gallery/nominations'>
                                 Номинации
-                            </NavDropdown.Item> */}
-                            <NavDropdown.Item className='active-bg-override' as={Link} href='/people'>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item className='active-bg-override' as={Link} passHref href='/gallery/people'>
                                 Люди
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link as={Link} href='/nominations'>
-                            Моя Хуйня<sup>™</sup>
-                        </Nav.Link>
+                        {
+                            session?.user.id && <Nav.Link as={Link} passHref href='/nominations'>
+                                Моя Хуета<sup>™</sup>
+                            </Nav.Link>
+                        }
+
                         {session?.user.role === UserRole.ADMIN && <Form.Check className=' mt-2' type={'switch'} defaultChecked={showAdminTools} onChange={(e) => setShowAdminTools(e.target.checked)} />}
                     </Nav>
                 </Navbar.Collapse>

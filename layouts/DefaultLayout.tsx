@@ -8,7 +8,7 @@ export default function GetDefaultLayout(page: ReactElement) {
     return (
         <div className="h-100 bg-dark-900">
             <Head>
-                <title>RFBW</title>
+                <title>Хуета Года 2022</title>
             </Head>
             <Navbar />
             <Container fluid className="h-100 bg-dark-900 p-0">

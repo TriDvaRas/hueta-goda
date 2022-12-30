@@ -9,6 +9,7 @@ import { SessionProvider } from "next-auth/react"
 import Head from 'next/head'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
+import { SSRProvider } from 'react-bootstrap'
 
 export type NextPageWithLayout = NextPage<any> & {
   getLayout?: (page: ReactElement) => ReactNode
@@ -22,14 +23,16 @@ export default function App({
 }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
-    <SessionProvider session={session}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      <div id="app" className={`mh-100 bg-dark-900 `}>
-        {getLayout(<Component {...pageProps} />)}
-      </div>
-    </SessionProvider>
+    <SSRProvider>
+      <SessionProvider session={session}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+        <div id="app" className={`mh-100 bg-dark-900 `}>
+          {getLayout(<Component {...pageProps} />)}
+        </div>
+      </SessionProvider>
+    </SSRProvider>
   )
 }
 

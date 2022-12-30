@@ -3,6 +3,7 @@ import { Nomination } from '@prisma/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import prisma from '../../../../lib/prismadb';
+import adminOnly from '../../../../middleware/adminOnly';
 import commonErrorHandlers from '../../../../middleware/commonErrorHandlers';
 import withApiSession from '../../../../middleware/requireApiSession';
 import requireApiSession from '../../../../middleware/requireApiSession';
@@ -42,6 +43,7 @@ export default router
         }
     })
     .use(requireApiSession)
+    .use(adminOnly)
     .put(async (req: NextApiRequest & { body: HGApiItemPutBody<Nomination | NominationFull> }, res: NextApiResponse<HGApiItemResponse<Nomination | NominationFull>>) => {
         try {
             const body = req.body

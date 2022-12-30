@@ -29,7 +29,7 @@ export default router
                 },
                 include: {
                     author: true,
-                    Nominee: {
+                    Nominee: req.query.onlyAuthor == 'true' ? false : {
                         where: {
                             authorUserId: req.session.user.id
                         },
