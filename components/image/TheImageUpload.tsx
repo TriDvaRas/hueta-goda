@@ -11,6 +11,7 @@ import { BarLoader } from 'react-spinners';
 import { HGApiError } from '../../types/hg-api';
 import { parseApiError } from '../../util/error';
 import { ImageMeta } from '../../util/selectPartials';
+import Crown from '../Crown';
 
 interface Props {
     imageId?: string
@@ -22,9 +23,11 @@ interface Props {
     scale?: number
     onImageMove?: (pos: string) => void
     onImageZoom?: (scale: number) => void
+    crown?: number
+    crownSize?: number
 }
 export default function TheImageUpload(props: Props) {
-    const { imageId, size, ar, onUploaded, onError, onImageMove, scale, position, onImageZoom } = props
+    const { imageId, size, ar, onUploaded, onError, onImageMove, scale, position, onImageZoom, crown, crownSize } = props
     const [src, setSrc] = useState(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`);
     useEffect(() => {
         setSrc(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`)
@@ -285,18 +288,30 @@ export default function TheImageUpload(props: Props) {
                     className={`image-upload-container  ${ar ? `ar-${ar}` : ''} `}
                     style={{
                         borderRadius: '10px',
-                        overflow: 'hidden',
                         // maxWidth: '100%',
                         // maxHeight: '100%',
                         // margin: '0 auto',
-
+                        position: 'relative',
                         height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
                         width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
 
                     }}
                 >
+                    <div style={{
+                        zIndex: 200,
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                        overflow: 'visible',
+                        translate:'50% -50%',
+                        opacity: isBlured ? 0 : 1
+                        // paddingRight: 10,
+                        // paddingTop: 5,
+                    }}>
+                        <Crown size={crownSize || 80} cornered position={crown || -1} />
+                    </div>
                     <Button variant='secondary' onClick={onClick} key={1} className='d-flex align-items-center justify-content-center m-2' style={{
-                        zIndex: 99,
+                        zIndex: 201,
                         position: 'absolute',
                         right: 0,
                         opacity: .7,
@@ -310,6 +325,7 @@ export default function TheImageUpload(props: Props) {
                         src={src}
                         alt='fuck'
                         style={{
+                            borderRadius: '10px',
                             height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
                             width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
                             // maxWidth: '100%',
@@ -318,6 +334,8 @@ export default function TheImageUpload(props: Props) {
                             objectPosition: position || '50% 50%',
                             transformOrigin: '0% 0%',
                             transform: `scale(${scale || 1})`,
+                            overflow: 'hidden',
+
                             // opacity: 0.5,
                             // overflow: 'visible',
                             filter: isBlured ? 'blur(20px)' : 'none'
@@ -335,7 +353,7 @@ export default function TheImageUpload(props: Props) {
                     />
                 </div>
             }}
-        </Dropzone>
+        </Dropzone >
 
     )
 }

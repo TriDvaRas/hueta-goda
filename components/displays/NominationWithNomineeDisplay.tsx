@@ -36,7 +36,7 @@ export default function NominationWithNomineeDisplay(props: Props) {
             }
         }
     }, [width, text]);
-    
+
     return (
         <div className={`${className || ''} w-100 mw-100 `} ref={squareRef}>
             <div className={` `} style={{
@@ -48,7 +48,7 @@ export default function NominationWithNomineeDisplay(props: Props) {
                 justifyContent: 'center',
             }}>
                 {nominee?.imageId ?
-                    <TheImage size={imageSize || 'ORIGINAL'} imageId={nominee?.imageId} ar={nomination.aspectRatio} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
+                    <TheImage crownSize={40} crown={nominee.position} size={imageSize || 'ORIGINAL'} imageId={nominee?.imageId} ar={nomination.aspectRatio} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
                     <TheImage ar={nomination.aspectRatio} />
                 }
             </div>

@@ -332,21 +332,27 @@ const NominationEdit: NextPageWithLayout = () => {
                 </Card>
                 <Container>
                     <Row lg={4}>
-                        {nomination && nomineeExamples.map(nominee => <Col key={nominee.id}>
-                            <Card bg='dark' className='d-flex p-2 align-items-center'>
-                                <div className='d-flex align-items-center my-auto'>
-                                    <div className='mx-1'>by {nominee.author.displayName || nominee.author.name}</div>
-                                    <Image roundedCircle src={nominee.author.image || '/errorAvatar.jpg'} height={30} alt={''} onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }} />
-                                </div>
-                                <NominationFullPreview nomination={{ ...nomination, Nominee: [nominee] }} name='nominee' />
-                                <Button onClick={() => setLocalNominees([...localNominees, {
-                                    ...nominee,
-                                    authorUserId: session?.user.id || 'fuck',
-                                    id: `${Math.random()}`,
-                                    position: localNominees.length + Math.min(...localNominees.map(x => x.position)),
-                                }])}>Добавить к себе</Button>
-                            </Card>
-                        </Col>)}
+                        {nomination &&
+                            nomineeExamples.length > 0 ? nomineeExamples.map(nominee => <Col key={nominee.id}>
+                                <Card bg='dark' className='d-flex p-2 align-items-center'>
+                                    <div className='d-flex align-items-center my-auto'>
+                                        <div className='mx-1'>by {nominee.author.displayName || nominee.author.name}</div>
+                                        <Image roundedCircle src={nominee.author.image || '/errorAvatar.jpg'} height={30} alt={''} onError={(e: any) => { e.target.onerror = null; e.target.src = "/errorAvatar.jpg" }} />
+                                    </div>
+                                    <NominationFullPreview nomination={{ ...nomination, Nominee: [nominee] }} name='nominee' />
+                                    <Button onClick={() => setLocalNominees([...localNominees, {
+                                        ...nominee,
+                                        authorUserId: session?.user.id || 'fuck',
+                                        id: `${Math.random()}`,
+                                        position: localNominees.length + Math.min(...localNominees.map(x => x.position)),
+                                    }])}>Добавить к себе</Button>
+                                </Card>
+                            </Col>) : <Card bg='dark text-center mx-auto my-3' style={{ width: 270 }}>
+                            <Card.Body>
+                                <Card.Title style={{ fontSize: '130%' }}>Тут ничего нет(</Card.Title>
+                                <Card.Text style={{ fontSize: '70%' }}>Стань первым кто заполнит эту хуйню</Card.Text>
+                            </Card.Body>
+                        </Card>}
                     </Row>
                 </Container>
             </div> :

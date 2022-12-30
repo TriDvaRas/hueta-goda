@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Card, Form, Image as ReactImage, ProgressBar,
 } from 'react-bootstrap';
+import Crown from '../Crown';
 
 interface Props {
     imageId?: string
@@ -11,9 +12,11 @@ interface Props {
     ar?: AspectRatio
     position?: string
     scale?: number
+    crown?: number
+    crownSize?: number
 }
 export default function TheImage(props: Props) {
-    const { imageId, size: _size, ar, scale, position } = props
+    const { imageId, size: _size, ar, scale, position, crown, crownSize } = props
     const size = _size || ImageSize.ORIGINAL
     const [src, setSrc] = useState(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`);
     useEffect(() => {
@@ -27,7 +30,6 @@ export default function TheImage(props: Props) {
                 className={`${ar ? `ar-${ar}` : ''} `}
                 style={{
                     borderRadius: '10px',
-                    overflow: 'hidden',
                     maxWidth: '100%',
                     maxHeight: '100%',
                     height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
@@ -56,19 +58,32 @@ export default function TheImage(props: Props) {
             className={`${ar ? `ar-${ar}` : ''} `}
             style={{
                 borderRadius: '10px',
-                overflow: 'hidden',
                 maxWidth: '100%',
                 maxHeight: '100%',
-
+                position:'relative',
                 height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
                 width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
             }}
         >
+            <div style={{
+                zIndex: 200,
+                position: 'absolute',
+                right:0,
+                top: 0,
+                overflow: 'visible',
+                translate:'50% -50%',
+                opacity: isBlured ? 0 : 1
+                // paddingRight: 10,
+                // paddingTop: 5,
+            }}>
+                <Crown size={crownSize || 80} cornered position={crown || -1} />
+            </div>
             <ReactImage
                 className={`${ar ? `ar-${ar}` : ''} `}
                 src={src}
                 alt='fuck'
                 style={{
+                    borderRadius: '10px',
                     height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
                     width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
                     maxWidth: '100%',

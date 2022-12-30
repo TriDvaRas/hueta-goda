@@ -48,7 +48,7 @@ export default function NominationWithNomineeDisplayEditable(props: Props) {
                 justifyContent: 'center',
             }}>
                 {nominee?.imageId ?
-                    <TheImageUpload position={nominee.imagePosition} scale={nominee.imageScale} onImageMove={onImageMove} onUploaded={onImageChange} onImageZoom={onImageZoom} onError={() => { }} size={imageSize || 'ORIGINAL'} imageId={nominee.imageId} ar={nomination.aspectRatio} /> :
+                    <TheImageUpload crown={nominee.position} crownSize={80} position={nominee.imagePosition} scale={nominee.imageScale} onImageMove={onImageMove} onUploaded={onImageChange} onImageZoom={onImageZoom} onError={() => { }} size={imageSize || 'ORIGINAL'} imageId={nominee.imageId} ar={nomination.aspectRatio} /> :
                     <TheImageUpload size={'LARGE'} onUploaded={onImageChange} onError={() => { }} ar={nomination.aspectRatio} />
                 }
             </div>
