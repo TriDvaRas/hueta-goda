@@ -51,7 +51,11 @@ export default router
             //TODO validation
             const nomination = await prisma.nomination.update({
                 where: { id: req.query.itemId as string },
-                data: body,
+                data: {
+                    ...body,
+                    author: undefined,
+                    NominationLike: undefined
+                },
                 include: {
                     author: true,
                     Nominee: req.query.full == 'true' ? {

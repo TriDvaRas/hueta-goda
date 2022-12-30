@@ -64,7 +64,8 @@ export default router
             const nomination = await prisma.nomination.create({
                 data: {
                     ...body,
-                    authorUserId: req.session.user.id
+                    authorUserId: req.session.user.id,
+                    author: undefined
                 },
                 include: {
                     author: true,
