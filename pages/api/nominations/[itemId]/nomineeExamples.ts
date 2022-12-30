@@ -24,7 +24,8 @@ export default router
                 where: {
                     NOT: {
                         authorUserId: req.session.user.id,
-                    }
+                    },
+                    nominationId: req.query.itemId as string
                 },
                 include: {
                     author: true,
