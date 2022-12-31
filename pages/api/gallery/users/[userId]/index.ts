@@ -39,6 +39,9 @@ export default router
                 include: {
                     author: true,
                     Nominee: {
+                        where:{
+                            authorUserId: req.query.userId as string
+                        },
                         orderBy: {
                             position: 'asc'
                         }

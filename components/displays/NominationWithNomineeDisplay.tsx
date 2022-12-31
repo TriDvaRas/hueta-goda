@@ -28,7 +28,7 @@ export default function NominationWithNomineeDisplay(props: Props) {
         if (containerRef.current && textRef.current) {
             const containerWidth = containerRef.current.offsetWidth;
             const containerHeight = containerRef.current.offsetHeight;
-            let fontSize = width / 8;
+            let fontSize = width / 4;
             textRef.current.style.fontSize = `${fontSize}px`;
             while (textRef.current.offsetWidth > containerWidth || textRef.current.offsetHeight > containerHeight) {
                 fontSize -= 1;
@@ -52,7 +52,7 @@ export default function NominationWithNomineeDisplay(props: Props) {
                     <TheImage ar={nomination.aspectRatio} />
                 }
             </div>
-            {textSource !== 'none' && <div ref={containerRef} className='w-100' style={{ height: width / 4 }}>
+            {textSource !== 'none' && <div ref={containerRef} className='w-100' style={{ minHeight: width / 8, maxHeight: width / 4 }}>
                 <h1 ref={textRef} className='impact text-center' >{(text || 'Sample Text').toUpperCase()}</h1>
             </div>}
         </div>

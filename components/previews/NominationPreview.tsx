@@ -10,9 +10,10 @@ interface Props {
     nomination: NominationFull | Nomination,
     onTextEdit?: (text: string) => void
     nominee?: Nominee
+    overrideText?: string
 }
 export default function NominationPreview(props: Props) {
-    const { nomination, onTextEdit, nominee } = props
+    const { nomination, onTextEdit, nominee, overrideText } = props
     let [squareRef, { width }] = useElementSize()
     if (!width) width = 30
     return (
@@ -23,7 +24,7 @@ export default function NominationPreview(props: Props) {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                <TheImage  ar={nomination.aspectRatio} imageId={nominee?.imageId} position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.MEDIUM}/>
+                <TheImage ar={nomination.aspectRatio} imageId={nominee?.imageId} position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.MEDIUM} />
             </div>
             {
                 onTextEdit ?
@@ -44,7 +45,7 @@ export default function NominationPreview(props: Props) {
                         editOnViewClick
                         onSave={onTextEdit}
                     /> :
-                    <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{(nomination?.name || 'Sample Text').toUpperCase()}</h1>
+                    <h1 className='impact text-center' style={{ fontSize: width / 8 }}>{overrideText || (nomination?.name || 'Sample Text').toUpperCase()}</h1>
             }
         </div>
 
