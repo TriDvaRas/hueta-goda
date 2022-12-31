@@ -327,8 +327,8 @@ export default function TheImageUpload(props: Props) {
                         alt='fuck'
                         style={{
                             borderRadius: '10px',
-                            height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
-                            width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
+                            height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL || ar == AspectRatio.SQUARE ? '100%' : 'auto',
+                            width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE || ar == AspectRatio.SQUARE ? '100%' : 'auto',
                             // maxWidth: '100%',
                             // maxHeight: '100%',
                             display: 'block',
