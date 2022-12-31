@@ -8,6 +8,7 @@ import GetThinLayout from '../layouts/ThinLayout';
 import Link from 'next/link'
 import { signIn, useSession } from 'next-auth/react'
 import LoadingDots from '../components/LoadingDots'
+import { randomSeededColor } from '../util/colors'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,16 +31,16 @@ const Home: NextPageWithLayout = () => {
         <Form.Check type='switch' label="Показывать чужие ответы при заполнении" checked={showNomineeExamples} onChange={(e) => setShowNomineeExamples(e.target.checked)} />
         <Form.Check type='switch' label="Показывать изображения со спойлерами" checked={showSpoilerGlobal} onChange={(e) => setShowSpoilerGlobal(e.target.checked)} />
         <Form.Check type='switch' label="Показывать NSFW изображения" checked={showNSFWGlobal} onChange={(e) => setShowNSFWGlobal(e.target.checked)} />
-        И на последок, если у вас есть идеи для новых номинаций вы знаете кому писать и не забывайте ставить звездочки✨ понравившимся номинациям что бы другие пользователи видели их раньше <s>и не забили на них хер потому что устали заполнять спустя 20 штук</s>. А теперь удачи! Хотя она вам уже не поможет🙃
+        И на последок, если у вас есть идеи для новых номинаций вы знаете кому писать и не забывайте ставить звездочки✨ понравившимся номинациям что бы другие пользователи видели их раньше <s>и не забили на них хер потому что устали заполнять спустя 20 штук</s>. Если не собираетесь заполнять все, то я рекомендую теги {['Classic'].map(x => <Link key={x} href={`/nominations?tag=${encodeURIComponent(x)}&viewMode=all`}><Badge bg={'custom'} className={'me-1'} style={{ backgroundColor: randomSeededColor(x), }}>{x}</Badge></Link>)} и {['RFBW'].map(x => <Link key={x} href={`/nominations?tag=${encodeURIComponent(x)}&viewMode=all`}><Badge bg={'custom'} className={'me-1'} style={{ backgroundColor: randomSeededColor(x), }}>{x}</Badge></Link>)}. А теперь удачи! Хотя она вам уже не поможет🙃
         {
           sessionStatus == 'loading' ? <LoadingDots compact className='me-3' count={5} size='sm' /> :
             session ?
-              <div className='d-flex align-items-center justify-content-evenly'>
+              <div className='d-flex align-items-center justify-content-evenly my-1'>
                 <Link href={`/nominations`}><Button>Заполнять Хуету <i className="bi bi-box-arrow-up-right"></i></Button></Link>
                 <Link href={`/gallery/people`}><Button>Смотреть чужую Хуету <i className="bi bi-box-arrow-up-right"></i></Button></Link>
                 <Link href={`/gallery/nominations`}><Button>Смотреть Номинации <i className="bi bi-box-arrow-up-right"></i></Button></Link>
               </div> :
-              <div className='d-flex align-items-center justify-content-center'>
+              <div className='d-flex align-items-center justify-content-center my-1'>
                 И не забудь залогиниться 🙂
                 <Nav.Link
                   // href="/auth" 
