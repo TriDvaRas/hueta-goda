@@ -242,8 +242,8 @@ export default function TheImageUpload(props: Props) {
                         style={{
                             borderRadius: '10px',
                             opacity: .7,
-                            height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
-                            width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
+                            height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL || ar == AspectRatio.SQUARE ? '100%' : 'auto',
+                            width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE || ar == AspectRatio.SQUARE ? '100%' : 'auto',
                             maxWidth: '100%',
                             maxHeight: '100%',
                             display: 'block',
@@ -293,8 +293,8 @@ export default function TheImageUpload(props: Props) {
                         // maxHeight: '100%',
                         // margin: '0 auto',
                         position: 'relative',
-                        height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
-                        width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',
+                        height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL || ar == AspectRatio.SQUARE ? '100%' : 'auto',
+                        width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE || ar == AspectRatio.SQUARE ? '100%' : 'auto',
 
                     }}
                 >
@@ -304,7 +304,7 @@ export default function TheImageUpload(props: Props) {
                         right: 0,
                         top: 0,
                         overflow: 'visible',
-                        translate:'50% -50%',
+                        translate: '50% -50%',
                         opacity: isBlured ? 0 : 1
                         // paddingRight: 10,
                         // paddingTop: 5,
