@@ -92,6 +92,8 @@ export default router
                                     position: newNominee.position as number,
                                     imagePosition: newNominee.imagePosition,
                                     imageScale: newNominee.imageScale,
+                                    hasNSFW: newNominee.hasNSFW,
+                                    hasSpoilers: newNominee.hasSpoilers,
                                 }
                             })
                         }
