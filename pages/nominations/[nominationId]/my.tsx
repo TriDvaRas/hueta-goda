@@ -1,14 +1,14 @@
-import { AspectRatio, Nomination, Nominee } from '@prisma/client';
+import { AspectRatio, Nomination, NominationLike, Nominee } from '@prisma/client';
 import axios from 'axios';
 import _ from 'lodash';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, Col, Form, Row, Button, Badge, Image, OverlayTrigger, Popover, Container } from 'react-bootstrap';
 import ReactPlaceholder from 'react-placeholder/lib/index';
 import RectShape from 'react-placeholder/lib/placeholders/RectShape';
-import { useLocalStorage } from 'usehooks-ts';
+import { useHover, useLocalStorage } from 'usehooks-ts';
 import arSQUARE from '../../../assets/svg/ar-SQUARE.svg';
 import arTALL from '../../../assets/svg/ar-TALL.svg';
 import arULTRATALL from '../../../assets/svg/ar-ULTRATALL.svg';
@@ -107,6 +107,47 @@ const NominationEdit: NextPageWithLayout = () => {
         }
         return () => setNomination(undefined)
     }, [nominationId, session])
+
+    const likeHoverRef = useRef(null)
+    const isLikeHover = useHover(likeHoverRef)
+    const updateNominationLikes = (newlikes:NominationLike[]) => {
+        if (nomination)
+            setNomination({ ...nomination, NominationLike: newlikes })
+    }
+    const handleLike = () => {
+        try {
+            if (session?.user.id && nomination && nomination.NominationLike) {
+                const oldList = [...nomination.NominationLike]
+                const oldValue = !!nomination.NominationLike?.find(x => x.userId === session?.user.id)
+                if (oldValue) {
+                    updateNominationLikes(nomination.NominationLike.filter(x => x.userId !== session?.user.id))
+                }
+                else {
+                    updateNominationLikes([...nomination.NominationLike, {
+                        id: 'tbd',
+                        createdAt: new Date(),
+                        updatedAt: new Date(),
+                        nominationId: nomination.id,
+                        userId: session?.user.id
+                    }])
+
+                }
+                axios.post<NominationLike[]>(`/api/nominations/${nomination.id}/like?value=${!oldValue}`)
+                    .then((res) => {
+                        updateNominationLikes(res.data)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        updateNominationLikes(oldList)
+                    })
+            }
+        } catch (error) {
+            console.log(nomination);
+            throw error;
+
+        }
+
+    }
 
     function saveChanges() {
         if (nomineesValidation.includes(false)) {
@@ -209,7 +250,14 @@ const NominationEdit: NextPageWithLayout = () => {
                             </div>}>
                             {nomination && <Card bg='dark' text='light' className=' w-100'>
                                 <Card.Body>
-                                    <Card.Title className=' fs-1 fw-bolder' >{nomination.name}</Card.Title>
+                                    <div className='d-flex  h-100 align-items-center'>
+                                        <Card.Title className='fw-bolder' style={{ fontSize: nomination.name.length > 13 ? '1.5em' : '2.3em' }} >
+                                            {nomination.name}
+
+                                        </Card.Title>
+                                        <i ref={likeHoverRef} onClick={handleLike} style={{ zIndex: '3' }} className={`ms-3 fs-3 bi bi-star${session?.user.id && isLikeHover || nomination.NominationLike?.find(x => x.userId == session?.user.id) ? '-fill' : ""} `}></i>
+                                        <div className='ms-1 fs-5'>{nomination.NominationLike.length}</div>
+                                    </div>
                                     <Card.Subtitle className='mb-2'>
                                         {(nomination?.tags as string[] || []).map(x => <Badge key={x} bg={'custom'} className={'me-1'}
                                             style={{

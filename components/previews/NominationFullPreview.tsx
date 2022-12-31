@@ -42,7 +42,7 @@ export default function NominationFullPreview(props: Props) {
                 justifyContent: 'center',
             }}>
                 {nominee?.imageId ?
-                    <TheImage imageId={nominee?.imageId} ar={nomination.aspectRatio} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
+                    <TheImage hasSpoilers={nominee.hasSpoilers} hasNSFW={nominee.hasNSFW} imageId={nominee?.imageId} ar={nomination.aspectRatio} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
                     <TheImage ar='TALL' />
                 }
             </div>

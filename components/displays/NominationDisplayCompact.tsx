@@ -55,7 +55,7 @@ export default function NominationDisplayWideCompact(props: Props) {
         }
     }
     return <div>
-        <Card bg='dark' text='light' className=' w-100'>
+        <Card bg='dark' text='light' className=' w-100' style={{minHeight:165}}>
             <Row lg={11}>
                 <Link href={`/gallery/nominations/${nomination.id}`}><Col lg={4} className={`d-flex align-items-center flex-row padding-right-on-hover  bg-dark-gradient-hover`}
                     style={{

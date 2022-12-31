@@ -62,7 +62,7 @@ export default function NomineeDraggableRow(props: Props) {
         <tr ref={ref} className='d-flex w-100 align-items-center' style={{ fontSize: '125%', cursor: isDragging ? 'grabbing' : 'grab' }}>
             <td className='d-flex w-100 align-items-center py-1 border-bottom border-secondary ' style={selected ? { backgroundColor: '#24372E' } : {}} >
                 <div style={{ width: 45, height: 45 }}><Crown position={nominee.position} size={45} /></div>
-                <div className='me-2' style={{ height: 55 }}><TheImage position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.PREVIEW} ar={ar || AspectRatio.SQUARE} imageId={nominee.imageId} /></div>
+                <div className='me-2' style={{ height: 55 }}><TheImage  position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.PREVIEW} ar={ar || AspectRatio.SQUARE} imageId={nominee.imageId} /></div>
                 <div className='me-auto'>{nominee.name}</div>
                 {valid == false && <i className="text-warning bi bi-exclamation-triangle-fill"></i>}
                 {onEditClick && <div className='ms-2 me-2 h-100 highlight-icon-on-hover' style={{ fontSize: '110%', cursor: 'pointer' }} onClick={() => onEditClick(nominee)}><i className="bi bi-pencil"></i></div>}

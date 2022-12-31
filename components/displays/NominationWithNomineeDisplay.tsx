@@ -48,7 +48,7 @@ export default function NominationWithNomineeDisplay(props: Props) {
                 justifyContent: 'center',
             }}>
                 {nominee?.imageId ?
-                    <TheImage crownSize={40} crown={nominee.position} size={imageSize || 'ORIGINAL'} imageId={nominee?.imageId} ar={nomination.aspectRatio} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
+                    <TheImage crownSize={40} hasSpoilers={nominee.hasSpoilers} hasNSFW={nominee.hasNSFW} crown={nominee.position} size={imageSize || 'ORIGINAL'} imageId={nominee?.imageId} ar={nomination.aspectRatio} position={nominee?.imagePosition} scale={nominee?.imageScale} /> :
                     <TheImage ar={nomination.aspectRatio} />
                 }
             </div>

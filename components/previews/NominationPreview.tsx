@@ -23,7 +23,7 @@ export default function NominationPreview(props: Props) {
                 alignItems: 'center',
                 justifyContent: 'center',
             }}>
-                <TheImage ar={nomination.aspectRatio} imageId={nominee?.imageId} position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.MEDIUM}/>
+                <TheImage  ar={nomination.aspectRatio} imageId={nominee?.imageId} position={nominee?.imagePosition} scale={nominee?.imageScale} size={ImageSize.MEDIUM}/>
             </div>
             {
                 onTextEdit ?

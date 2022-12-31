@@ -1,11 +1,7 @@
 import { ImageSize, Nomination, Nominee } from '@prisma/client';
 import { useEffect, useRef } from 'react';
-import EdiText from 'react-editext';
-import { RectShape } from 'react-placeholder/lib/placeholders';
 import { useElementSize } from 'usehooks-ts';
-import { NominationFull } from '../../types/extendedApiTypes';
 import { ImageMeta } from '../../util/selectPartials';
-import TheImage from '../image/TheImage';
 import TheImageUpload from '../image/TheImageUpload';
 
 interface Props {

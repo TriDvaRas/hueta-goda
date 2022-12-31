@@ -37,7 +37,8 @@ export const globalConfig = {
         'Music',
         'Cinema',
         'Best',
-        'Worst'
+        'Worst',
+        'Starlight',
     ]),
     nominationExtraTypes: [
         'Raw Link',
