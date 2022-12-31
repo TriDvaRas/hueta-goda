@@ -87,12 +87,12 @@ export default function TheImage(props: Props) {
                 <Crown size={crownSize || 80} cornered position={crown || -1} />
             </div>
             {hasSpoilers && !showSpoiler && <div key={1} className='image-spoiler-overlay d-flex align-items-center flex-column justify-content-center' style={{ zIndex: 99 }}>
-                <div className='text-center ' style={{}}>Изображение содержит спойлеры</div>
-                <Button variant='outline-danger' onClick={()=>setShowSpoiler(true)}>Показать</Button>
+                <div className='text-center mb-2' style={{}}>Изображение содержит спойлеры</div>
+                <Button variant='outline-danger text-light' onClick={()=>setShowSpoiler(true)}>Показать</Button>
             </div>}
             {hasNSFW && !showNSFW && <div key={1} className='image-spoiler-overlay d-flex align-items-center flex-column justify-content-center' style={{ zIndex: 99 }}>
-                <div className='text-center mb-2' style={{opacity:1}}>Изображение содержит NSFW</div>
-                <Button variant='outline-danger' style={{opacity:1}} onClick={()=>setShowNFSW(true)}>Показать</Button>
+                <div className='text-center mb-2' style={{opacity:1}}>Изображение содержит NSFW контент</div>
+                <Button variant='outline-danger text-light' style={{opacity:1}} onClick={()=>setShowNFSW(true)}>Показать</Button>
             </div>}
             <div className={`${ar ? `ar-${ar}` : ''} `}
                 style={{

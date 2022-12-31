@@ -14,3 +14,11 @@ export interface NominationWithAuthor extends Nomination {
 export interface NomineeWithAuthor extends Nominee {
     author: User
 }
+export interface UserWithStats extends User {
+    nominationsFilled: number
+    nomineesAdded: number
+}
+export interface UserWithNominationsFull extends User {
+    nominations: NominationFull[] 
+}
+
