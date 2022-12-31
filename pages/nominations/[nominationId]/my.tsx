@@ -211,10 +211,10 @@ const NominationEdit: NextPageWithLayout = () => {
                                 <Card.Body>
                                     <Card.Title className=' fs-1 fw-bolder' >{nomination.name}</Card.Title>
                                     <Card.Subtitle className='mb-2'>
-                                        {(nomination?.tags as string[] || []).map(x => <Link key={x} href={`/nominations?tag=${x}`}><Badge bg={'custom'} className={'me-1'}
+                                        {(nomination?.tags as string[] || []).map(x => <Badge key={x} bg={'custom'} className={'me-1'}
                                             style={{
                                                 backgroundColor: randomSeededColor(x),
-                                            }}>{x}</Badge></Link>)}
+                                            }}>{x}</Badge>)}
                                     </Card.Subtitle>
                                     <Card.Subtitle>{nomination.description}</Card.Subtitle>
                                     <div className='d-flex align-items-center my-1'>

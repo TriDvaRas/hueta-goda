@@ -16,10 +16,11 @@ interface Props {
     children?: ReactNode
     nomination: NominationFull
     updateNominationLikes: (likes: NominationLike[]) => void
+    gallery?: boolean
 }
 
 export default function NominationFullDisplayWide(props: Props) {
-    const { nomination, children, updateNominationLikes } = props
+    const { nomination, children, updateNominationLikes, gallery } = props
     const { data: session, status: sessionStatus } = useSession()
     const router = useRouter()
     const [showAdminTools, setShowAdminTools] = useLocalStorage('showAdminTools', false)
@@ -27,7 +28,7 @@ export default function NominationFullDisplayWide(props: Props) {
     const likeHoverRef = useRef(null)
     const isLikeHover = useHover(likeHoverRef)
     const handleLike = () => {
-        if (session?.user.id &&nomination.NominationLike) {
+        if (session?.user.id && nomination.NominationLike) {
             const oldList = [...nomination.NominationLike]
             const oldValue = !!nomination.NominationLike?.find(x => x.userId === session?.user.id)
             if (oldValue) {
@@ -57,10 +58,10 @@ export default function NominationFullDisplayWide(props: Props) {
         <Card className='mt-3 mx-2' bg='dark' text='light' style={{ borderRadius: 20 }}>
             <Card.Body>
                 <Row>
-                    <Col className='ps-3 flex-grow-1 d-flex align-items-start flex-column ' lg={4} >
+                    <Col className='ps-3 flex-grow-1 d-flex align-items-start flex-column ' lg={5} >
                         <ReactPlaceholder color={'#3f574c' as any} ready={!!nomination} >
                             <div className='d-flex align-items-center'>
-                                <Card.Title className=' fs-1 fw-bolder' >
+                                <Card.Title className='fw-bolder' style={{ fontSize: nomination.name.length > 14 ? '2em' : '2.5em' }}>
                                     {nomination.name}
 
                                 </Card.Title>
@@ -68,7 +69,7 @@ export default function NominationFullDisplayWide(props: Props) {
                                 <div className='ms-1 fs-5'>{nomination.NominationLike.length}</div>
                             </div>
                             <Card.Subtitle className='mb-2'>
-                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/gallery/nominations?tag=${x}`}><Badge bg={'custom'} className={'me-1'}
+                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`${gallery ? '/gallery' : ''}/nominations?tag=${encodeURIComponent(x)}&viewMode=all`}><Badge bg={'custom'} className={'me-1'}
                                     style={{
                                         backgroundColor: randomSeededColor(x),
                                     }}>{x}</Badge></Link>)}
@@ -81,8 +82,7 @@ export default function NominationFullDisplayWide(props: Props) {
                             {children}
                         </ReactPlaceholder>
                     </Col>
-                    <Col>
-                    </Col>
+
                     <Col lg={7} className='px-2 d-flex align-items-center flex-row bg-dark-850 m-n3 py-2' style={{ borderRadius: 20 }}>
                         {
                             nomination ?

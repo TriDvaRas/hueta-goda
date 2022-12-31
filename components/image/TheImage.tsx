@@ -41,6 +41,7 @@ export default function TheImage(props: Props) {
                     src={`/errorAvatar.jpg`}
                     alt='fuck'
                     style={{
+                        borderRadius: '10px',
                         opacity: .7,
                         maxWidth: '100%',
                         maxHeight: '100%',

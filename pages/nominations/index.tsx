@@ -15,6 +15,7 @@ import { useLocalStorage } from 'usehooks-ts';
 import NominationFullDisplayWide from '../../components/displays/NominationFullDisplayWide';
 import NominationFullDisplayWideCompact from '../../components/displays/NominationFullDisplayCompact';
 import NominationFullWidePlaceholder from '../../components/plaseholders/NominationFullWidePlaceholder';
+import _ from 'lodash';
 
 
 const NominationsHome: NextPageWithLayout = () => {
@@ -36,7 +37,7 @@ const NominationsHome: NextPageWithLayout = () => {
   const [filteredItems, setFilteredItems] = useState<NominationFull[] | undefined>(undefined)
   useEffect(() => {
     if (nominationsPage) {
-      setFilteredItems(nominationsPage.items.filter(x =>
+      setFilteredItems(_.orderBy(nominationsPage.items.filter(x =>
         (
           !router.query.tag || typeof router.query.tag == 'string' && (x.tags as string[]).includes(router.query.tag) || typeof router.query.tag == 'object' && (x.tags as string[]).find(t => router.query.tag?.includes(t))
         )
@@ -47,7 +48,7 @@ const NominationsHome: NextPageWithLayout = () => {
             || router.query.filled === '3' && ((x.Nominee?.length || 0) > 2)
           )
         )
-      ))
+      ), ['NominationLike.length', 'Nominee.length', (a) => { return a.name.replace(/(Лучш|Худш).+ /, '').trim() }], ['desc', 'desc', 'asc']))
     }
 
 

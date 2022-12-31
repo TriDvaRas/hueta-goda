@@ -42,7 +42,7 @@ export default function NominationFullDisplayWideCompact(props: Props) {
                         nominationId: nomination.id,
                         userId: session?.user.id
                     }])
-    
+
                 }
                 axios.post<NominationLike[]>(`/api/nominations/${nomination.id}/like?value=${!oldValue}`)
                     .then((res) => {
@@ -56,18 +56,18 @@ export default function NominationFullDisplayWideCompact(props: Props) {
         } catch (error) {
             console.log(nomination);
             throw error;
-            
+
         }
-        
+
     }
     return <div>
-        <Card className='mt-3 ' bg='dark' text='light' style={{ borderRadius: 20, overflow: 'hidden' }}>
-            <Card.Body>
-                <Row lg={11}>
-                    <Col className='ps-3 flex-grow-1 d-flex align-items-start flex-column ' lg={7} >
+        <Card className='mt-3 ' bg='dark' text='light' style={{ borderRadius: 20, overflow: 'hidden', minHeight: 210 }}>
+            <Card.Body className='h-100'>
+                <Row lg={11} className='h-100' style={{ minHeight: 177 }}>
+                    <Col className='ps-3 flex-grow-1 d-flex  align-items-start flex-column ' lg={7} >
                         <ReactPlaceholder color={'#3f574c' as any} ready={!!nomination} >
-                            <div className='d-flex align-items-center'>
-                                <Card.Title className=' fs-1 fw-bolder' >
+                            <div className='d-flex  h-100 align-items-center'>
+                                <Card.Title className='fw-bolder' style={{ fontSize: nomination.name.length > 13 ? '1.5em' : '2.3em' }} >
                                     {nomination.name}
 
                                 </Card.Title>
@@ -75,7 +75,7 @@ export default function NominationFullDisplayWideCompact(props: Props) {
                                 <div className='ms-1 fs-5'>{nomination.NominationLike.length}</div>
                             </div>
                             <Card.Subtitle className='mb-2'>
-                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/nominations?tags${x}`}><Badge bg={'custom'} className={'me-1'}
+                                {(nomination.tags as string[] || []).map(x => <Link key={x} href={`/nominations?tag=${encodeURIComponent(x)}`}><Badge bg={'custom'} className={'me-1'}
                                     style={{
                                         backgroundColor: randomSeededColor(x),
                                     }}>{x}</Badge></Link>)}

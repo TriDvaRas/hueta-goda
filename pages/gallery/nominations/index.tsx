@@ -37,7 +37,7 @@ const NominationsHome: NextPageWithLayout = () => {
   const [filteredItems, setFilteredItems] = useState<NominationFull[] | undefined>(undefined)
   useEffect(() => {
     if (nominationsPage) {
-      setFilteredItems(nominationsPage.items.filter(x =>
+      setFilteredItems(_.orderBy(nominationsPage.items.filter(x =>
         (
           !router.query.tag || typeof router.query.tag == 'string' && (x.tags as string[]).includes(router.query.tag) || typeof router.query.tag == 'object' && (x.tags as string[]).find(t => router.query.tag?.includes(t))
         )
@@ -48,7 +48,7 @@ const NominationsHome: NextPageWithLayout = () => {
             || router.query.filled === '3' && ((x.Nominee?.length || 0) > 2)
           )
         )
-      ))
+      ), ['NominationLike.length', 'Nominee.length', (a) => { return a.name.replace(/(Лучш|Худш).+ /, '').trim() }], ['desc', 'desc', 'asc']))
     }
   }, [nominationsPage, router.query.filled, router.query.tag])
 
@@ -73,7 +73,7 @@ const NominationsHome: NextPageWithLayout = () => {
       {nominationsLoading || !filteredItems ?
         "_".repeat(8).split('').map((x, i) => <Col key={i} className='mt-2'><NominationFullWidePlaceholder /></Col>) :
         filteredItems.map((nomination, i) => <Col key={i} className='mt-3'><NominationDisplayWideCompact
-          updateNominationLikes={(newLikes) => nominationsPage && setNominationsPage({
+          gallery updateNominationLikes={(newLikes) => nominationsPage && setNominationsPage({
             ...nominationsPage,
             items: nominationsPage.items.map(x => x.id == nomination.id ? {
               ...x,

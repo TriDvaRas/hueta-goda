@@ -240,6 +240,7 @@ export default function TheImageUpload(props: Props) {
                         src={`/errorAvatar.jpg`}
                         alt='fuck'
                         style={{
+                            borderRadius: '10px',
                             opacity: .7,
                             height: ar == AspectRatio.TALL || ar == AspectRatio.ULTRATALL ? '100%' : 'auto',
                             width: ar == AspectRatio.WIDE || ar == AspectRatio.ULTRAWIDE ? '100%' : 'auto',

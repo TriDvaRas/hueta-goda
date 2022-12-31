@@ -16,10 +16,11 @@ interface Props {
     children?: ReactNode
     nomination: NominationWithAuthor
     updateNominationLikes: (likes: NominationLike[]) => void
+    gallery?: boolean
 }
 
 export default function NominationDisplayWideCompact(props: Props) {
-    const { nomination, children, updateNominationLikes } = props
+    const { nomination, children, updateNominationLikes, gallery } = props
 
     const { data: session, status: sessionStatus } = useSession()
     const router = useRouter()
@@ -27,7 +28,7 @@ export default function NominationDisplayWideCompact(props: Props) {
     const likeHoverRef = useRef(null)
     const isLikeHover = useHover(likeHoverRef)
     const handleLike = () => {
-        if (session?.user.id &&nomination.NominationLike) {
+        if (session?.user.id && nomination.NominationLike) {
             const oldList = [...nomination.NominationLike]
             const oldValue = !!nomination.NominationLike?.find(x => x.userId === session?.user.id)
             if (oldValue) {
@@ -67,7 +68,7 @@ export default function NominationDisplayWideCompact(props: Props) {
                     <ReactPlaceholder color={'#3f574c' as any} ready={!!nomination} >
                         <Card.Body>
                             <div className='d-flex align-items-center'>
-                                <Card.Title className=' fs-1 fw-bolder' >
+                                <Card.Title className='fw-bolder' style={{ fontSize: nomination.name.length > 15 ? '1.5em' : '2.3em' }}>
                                     {nomination.name}
 
                                 </Card.Title>
@@ -75,8 +76,8 @@ export default function NominationDisplayWideCompact(props: Props) {
                                 <div className='ms-1 fs-5'>{nomination.NominationLike.length}</div>
                             </div>
                             <Card.Subtitle className='mb-2'>
-                                {(nomination?.tags as string[] || []).map(x => <Link key={x} href={`/gallery/nominations?tag=${x}`}><Badge bg={'custom'} className={'me-1'}
-                                    style={{
+                                {(nomination?.tags as string[] || []).map(x => <Link key={x} href={`${gallery ? '/gallery' : ''}/nominations?tag=${encodeURIComponent(x)}&viewMode=compact`}><Badge bg={'custom'} className={'me-1'}
+                                    style={{ 
                                         backgroundColor: randomSeededColor(x),
                                     }}>{x}</Badge></Link>)}
                             </Card.Subtitle>

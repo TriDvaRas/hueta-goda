@@ -35,6 +35,9 @@ export const globalConfig = {
         'osu!',
         'Rice Friends',
         'Music',
+        'Cinema',
+        'Best',
+        'Worst'
     ]),
     nominationExtraTypes: [
         'Raw Link',

@@ -67,6 +67,22 @@ const NominationEdit: NextPageWithLayout = () => {
                 setIsSaving(false)
             })
     }
+    function saveNew() {
+        setIsSaving(true)
+        const nom:any = localNomination
+        delete nom.Nominee
+        delete nom.author
+        delete nom.NominationLike
+        delete nom.id
+        delete nom.createdAt
+        delete nom.updatedAt
+        axios.post<NominationFull>(`/api/nominations/`, nom)
+            .then((res) => {
+                setNomination(res.data)
+                setLocalNomination(res.data)
+                setIsSaving(false)
+            })
+    }
     function resetChanges() {
 
     }
@@ -182,6 +198,7 @@ const NominationEdit: NextPageWithLayout = () => {
                                         </Form.Group>
                                         <Form.Group className='mt-2'>
                                             <Button variant='primary' disabled={isSaving} onClick={saveChanges}>Save</Button>
+                                            <Button variant='primary' disabled={isSaving} onClick={saveNew}>Save as new</Button>
                                             <Button variant='danger' onClick={resetChanges}>Reset</Button>
                                         </Form.Group>
                                     </Card.Body>
