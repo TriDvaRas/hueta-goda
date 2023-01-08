@@ -50,7 +50,10 @@ const NominationsHome: NextPageWithLayout = () => {
   return <div>
     <Container>
       <Card bg='dark' className='my-3 p-2 d-flex align-items-center justify-content-between flex-row'>
-        <Card.Title className=' ms-3 my-0 me-auto' style={{ fontSize: '200%', fontWeight: '600' }}>{nomination?.name || ''}</Card.Title>
+        <div>
+          <Card.Title className=' ms-3 my-0 me-auto' style={{ fontSize: '200%', fontWeight: '600' }}>{nomination?.name || ''}</Card.Title>
+          <Card.Subtitle className=' ms-3 mt-0 mb-1 me-auto' style={{ fontSize: '100%', fontWeight: '600' }}>{nomination?.description || ''}</Card.Subtitle>
+        </div>
         <FloatingLabel className=' me-1 ' controlId="floatingSelect" label="Вид">
           <Form.Select value={router.query.viewMode || 'compact'} onChange={e => {
             router.replace({
@@ -79,7 +82,7 @@ const NominationsHome: NextPageWithLayout = () => {
                 <NominationFullWidePlaceholder />
               </Col>) :
               users.map((x, i) => <Col key={i} className='mt-2' >
-                <UserNominationFullDisplay overrideText={x.displayName || x.name} nomination={{...nomination, Nominee:x.nominees}} />
+                <UserNominationFullDisplay overrideText={x.displayName || x.name} nomination={{ ...nomination, Nominee: x.nominees }} />
               </Col>)
             }
           </Row> :
@@ -89,7 +92,7 @@ const NominationsHome: NextPageWithLayout = () => {
                 <NominationFullWidePlaceholder />
               </Col>) :
               users.map((x, i) => <Col key={i} className='mt-2' >
-                <UserNominationFullDisplayCompact overrideText={x.displayName || x.name}  nomination={{...nomination, Nominee:x.nominees}} />
+                <UserNominationFullDisplayCompact overrideText={x.displayName || x.name} nomination={{ ...nomination, Nominee: x.nominees }} />
               </Col>)
             }
           </Row>

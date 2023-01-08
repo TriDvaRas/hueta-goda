@@ -25,14 +25,15 @@ export default function UserNominationFullDisplay(props: Props) {
     const nomineeTop = _.sortBy(nomination.Nominee || [], ['position', 'asc'])
 
     return <div className='mt-3 w-100 d-flex align-items-center justify-content-center flex-column' >
-        <div className='mt-3 w-100 d-flex align-items-center justify-content-center ' style={{ overflowX: 'scroll', maxWidth: '90%' }}>
+        <div className='mt-3 w-100 d-flex align-items-center justify-content-center ' >
             <Card className='py-2 px-3 d-flex align-items-center justify-content-center flex-row pt-3  w-100 h-100' bg='dark-850' text='light' style={{ maxWidth: 250 * nomineeTop.length, borderRadius: 20, overflow: 'visible' }}>
                 {
                     nomination && nomineeTop.map(x => <NominationWithNomineeDisplay key={x.id} className={'mx-1'} nominee={x} nomination={nomination} textSource='nominee' imageSize='MEDIUM' />)
                 }
             </Card>
         </div>
+        <div className='text-center impact fs-1 mb-n3'>{overrideText || nomination.name.toUpperCase()}</div>
+        {overrideText ? '' : <div className='text-center  '>{nomination.description}</div>}
 
-        <div className='text-center impact fs-1'>{overrideText || nomination.name.toUpperCase()}</div>
     </div >
 }

@@ -22,7 +22,7 @@ export default function TheImage(props: Props) {
     const { imageId, size: _size, ar, scale, position, crown, crownSize, hasNSFW, hasSpoilers } = props
     const size = _size || ImageSize.ORIGINAL
     const [src, setSrc] = useState(`/api/images/${imageId}?size=${ImageSize.PREVIEW}`);
-
+    
     const [showSpoilerGlobal, setShowSpoilerGlobal] = useLocalStorage('showSpoilerGlobal', false)
     const [showNSFWGlobal, setShowNSFWGlobal] = useLocalStorage('showNSFWGlobal', false)
     const [showSpoiler, setShowSpoiler] = useState(showSpoilerGlobal)
@@ -85,7 +85,7 @@ export default function TheImage(props: Props) {
                 // paddingRight: 10,
                 // paddingTop: 5,
             }}>
-                <Crown size={crownSize || 80} cornered position={crown || -1} />
+                <Crown size={crownSize || 80} cornered position={typeof crown == 'number' ? crown : -1} />
             </div>
             {hasSpoilers && !showSpoiler && <div key={1} className='image-spoiler-overlay d-flex align-items-center flex-column justify-content-center' style={{ zIndex: 99 }}>
                 <div className='text-center mb-2' style={{}}>Изображение содержит спойлеры</div>

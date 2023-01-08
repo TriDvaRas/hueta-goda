@@ -309,7 +309,7 @@ export default function TheImageUpload(props: Props) {
                         // paddingRight: 10,
                         // paddingTop: 5,
                     }}>
-                        <Crown size={crownSize || 80} cornered position={crown || -1} />
+                        <Crown size={crownSize || 80} cornered position={typeof crown == 'number' ? crown : -1} />
                     </div>
                     <Button variant='secondary' onClick={onClick} key={1} className='d-flex align-items-center justify-content-center m-2' style={{
                         zIndex: 201,
